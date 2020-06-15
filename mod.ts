@@ -1,8 +1,7 @@
-export * from "./model/mod.ts";
-
-export * from "./validator/int.ts";
-export * from "./validator/float.ts";
-export * from "./validator/boolean.ts";
-export * from "./validator/string.ts";
-export * from "./validator/dateTime.ts";
-export * from "./validator/json.ts";
+export { model } from "./model.ts";
+export { int } from "./validator/int.ts";
+export { float } from "./validator/float.ts";
+export { boolean } from "./validator/boolean.ts";
+export { string } from "./validator/string.ts";
+export { dateTime } from "./validator/dateTime.ts";
+export { json } from "./validator/json.ts";

@@ -19,6 +19,6 @@ export type Model = {
     | JsonField;
 };
 
-function model(model: Model) {
+export function model(model: Model) {
   return model;
 }
