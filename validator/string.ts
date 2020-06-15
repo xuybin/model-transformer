@@ -1,4 +1,4 @@
-import { Field } from "../model/field.ts";
+import { Field } from "./type.ts";
 
 export class StringField extends Field {
   constructor() {

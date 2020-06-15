@@ -1,4 +1,4 @@
-import { Field } from "../model/field.ts";
+import { Field } from "./type.ts";
 
 export class JsonField extends Field {
   constructor() {
