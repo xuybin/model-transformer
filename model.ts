@@ -35,13 +35,19 @@ export class Model<
     if (this._attributes.unique.length > 0) {
       throw new Error("Expected to be called once");
     }
-    this._attributes.unique.push(...unique);
+    if (new Set(unique).size != unique.length) {
+      throw new Error("Expect value to not be repeated");
+    }
+    this._attributes.id.push(...unique);
     return this;
   }
 
   public id(...id: Array<ResolveType<F>>): this {
     if (this._attributes.id.length > 0) {
       throw new Error("Expected to be called once");
+    }
+    if (new Set(id).size != id.length) {
+      throw new Error("Expect value to not be repeated");
     }
     this._attributes.id.push(...id);
     return this;
@@ -50,6 +56,9 @@ export class Model<
   public index(...index: Array<ResolveType<F>>): this {
     if (this._attributes.index.length > 0) {
       throw new Error("Expected to be called once");
+    }
+    if (new Set(index).size != index.length) {
+      throw new Error("Expect value to not be repeated");
     }
     this._attributes.index.push(...index);
     return this;
