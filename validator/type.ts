@@ -8,14 +8,26 @@ export const TYPE = {
 };
 
 export class Field {
-  private _null?: true;
-  private _id?: true;
-  private _unique?: true;
-  private _default?: unknown;
-  private _relation?: {
-    name?: string;
-    references: string[];
+  private readonly _attributes: {
+    null?: true;
+    id?: true;
+    unique?: true;
+    default?: unknown;
+    relation?: {
+      name?: string;
+      references: string[];
+    };
+  } = {
+    null: undefined,
+    id: undefined,
+    unique: undefined,
+    default: undefined,
+    relation: undefined,
   };
+
+  public get attributes() {
+    return this._attributes;
+  }
 
   constructor(fieldType: keyof (typeof TYPE)) {
     this.fieldType = fieldType;
@@ -28,27 +40,42 @@ export class Field {
   }
 
   public get id(): this {
-    this._id = true;
+    if (this._attributes.id) {
+      throw new Error("Expected to be called once");
+    }
+    this._attributes.id = true;
     return this;
   }
 
   public get null(): this {
-    this._null = true;
+    if (this._attributes.null) {
+      throw new Error("Expected to be called once");
+    }
+    this._attributes.null = true;
     return this;
   }
 
   public get unique(): this {
-    this._unique = true;
+    if (this._attributes.unique) {
+      throw new Error("Expected to be called once");
+    }
+    this._attributes.unique = true;
     return this;
   }
 
   public default(value: unknown): this {
-    this._default = value;
+    if (this._attributes.default) {
+      throw new Error("Expected to be called once");
+    }
+    this._attributes.default = value;
     return this;
   }
 
   public relation(references: string[], name?: string): this {
-    this._relation = {
+    if (this._attributes.relation) {
+      throw new Error("Expected to be called once");
+    }
+    this._attributes.relation = {
       name,
       references,
     };
