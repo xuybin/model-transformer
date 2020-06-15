@@ -1,3 +1,4 @@
+import { Field } from "./validator/type.ts";
 import { IntField, int } from "./validator/int.ts";
 import { FloatField, float } from "./validator/float.ts";
 import { BooleanField } from "./validator/boolean.ts";
@@ -6,18 +7,20 @@ import { DateTimeField } from "./validator/dateTime.ts";
 import { JsonField } from "./validator/json.ts";
 
 export type FieldType =
-  | IntField
-  | FloatField
-  | BooleanField
-  | StringField
-  | DateTimeField
-  | JsonField;
+  | Pick<IntField, "attributes">
+  | Pick<FloatField, "attributes">
+  | Pick<BooleanField, "attributes">
+  | Pick<StringField, "attributes">
+  | Pick<DateTimeField, "attributes">
+  | Pick<JsonField, "attributes">;
 
 export type ResolveType<S> = S extends { [name: string]: FieldType } ? keyof S
   : unknown extends S ? unknown
   : never;
 
-export class Model<F extends { [name: string]: FieldType }> {
+export class Model<
+  F extends { [name: string]: FieldType } = { [name: string]: FieldType },
+> {
   private readonly _attributes: {
     index: Array<ResolveType<F>>;
     id: Array<ResolveType<F>>;

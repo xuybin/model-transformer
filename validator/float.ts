@@ -6,4 +6,6 @@ export class FloatField extends Field {
   }
 }
 
-export const float = new FloatField();
+export function float() {
+  return new FloatField();
+}

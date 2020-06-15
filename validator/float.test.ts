@@ -4,6 +4,6 @@ import { float } from "./float.ts";
 const { test } = Deno;
 
 test("float_type", () => {
-  assertEquals(float.objectType, "number");
-  assertEquals(float.fieldType, "float");
+  assertEquals(float().objectType, "number");
+  assertEquals(float().fieldType, "float");
 });

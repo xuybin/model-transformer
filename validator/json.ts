@@ -6,4 +6,6 @@ export class JsonField extends Field {
   }
 }
 
-export const json = new JsonField();
+export function json() {
+  return new JsonField();
+}

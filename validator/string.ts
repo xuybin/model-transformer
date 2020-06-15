@@ -6,4 +6,6 @@ export class StringField extends Field {
   }
 }
 
-export const string = new StringField();
+export function string() {
+  return new StringField();
+}

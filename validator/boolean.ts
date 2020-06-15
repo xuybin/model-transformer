@@ -6,4 +6,6 @@ export class BooleanField extends Field {
   }
 }
 
-export const boolean = new BooleanField();
+export function boolean() {
+  return new BooleanField();
+}

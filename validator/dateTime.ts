@@ -6,4 +6,6 @@ export class DateTimeField extends Field {
   }
 }
 
-export const dateTime = new DateTimeField();
+export function dateTime() {
+  return new DateTimeField();
+}

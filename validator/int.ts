@@ -6,4 +6,6 @@ export class IntField extends Field {
   }
 }
 
-export const int = new IntField();
+export function int() {
+  return new IntField();
+}
