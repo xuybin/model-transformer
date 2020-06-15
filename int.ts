@@ -1,9 +1,9 @@
 import { Field } from "./type.ts";
 
 export class IntField extends Field {
-    constructor() { super('int'); }
-
+  constructor() {
+    super("int");
+  }
 }
 
-export const int= new IntField() 
-
+export const int = new IntField();
