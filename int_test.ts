@@ -3,7 +3,7 @@ import { int } from "./int.ts";
 
 const { test } = Deno;
 
-test("checkType", () => {
+test("int_type", () => {
   assertEquals(int.objectType, "number");
   assertEquals(int.fieldType, "int");
 });
