@@ -3,10 +3,9 @@ import { int } from "./int.ts";
 
 const { test } = Deno;
 
-test({
-  name: "checkType",
-  fn: () => {
+test( "checkType",
+  () => {
     assertEquals(int.objectType, "number");
     assertEquals(int.fieldType, "int");
   },
-});
+);
