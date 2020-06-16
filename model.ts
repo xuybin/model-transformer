@@ -1,4 +1,4 @@
-import { Field } from "./validator/type.ts";
+import { OmitType } from "./validator/type.ts";
 import { IntField } from "./validator/int.ts";
 import { FloatField } from "./validator/float.ts";
 import { BooleanField } from "./validator/boolean.ts";
@@ -19,7 +19,9 @@ type ResolveType<S> = S extends { [name: string]: FieldType } ? keyof S
   : never;
 
 export class Model<
-  F extends { [name: string]: FieldType } = { [name: string]: FieldType },
+  F extends { [name: string]: Omit<FieldType, OmitType> } = {
+    [name: string]: FieldType;
+  },
 > {
   private readonly _attributes: {
     index: Array<ResolveType<F>>;
@@ -76,15 +78,9 @@ export class Model<
 }
 
 export function model<
-  T extends FieldType,
-  F extends { [name: string]: T | Array<T> },
+  M extends { [name: string]: FieldType },
 >(
-  model: {
-    [K in keyof F]: Omit<
-      ResolveArray<T, F[K]>,
-      "attributes" | "fieldType" | "objectType"
-    >;
-  },
+  model: { [K in keyof M]: Omit<M[K], keyof M[K]> },
 ) {
   for (const fkey in model) {
     const element = model[fkey];
@@ -92,14 +88,8 @@ export function model<
       model[fkey] = (element[0]).array;
     }
   }
-  return new Model(
-    model as {
-      [K in keyof F]: Pick<
-        ResolveArray<T, F[K]>,
-        "attributes" | "fieldType" | "objectType"
-      >;
-    },
-  );
+  return new Model(model as { [K in keyof M]: M[K] });
 }
 
 export type ResolveArray<T, F> = F extends Array<T> ? F[0] : T;
+//

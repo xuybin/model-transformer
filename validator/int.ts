@@ -14,13 +14,13 @@ export class IntField extends Field {
 
   public min(
     value: number,
-  ): Omit<this, "min" |"array" | "attributes" | "fieldType" | "objectType"> {
+  ): Omit<this, "min" | OmitType> {
     this.intAttributes.min = value;
     return this;
   }
   public max(
     value: number,
-  ): Omit<this, "max" |"array" | "attributes" | "fieldType" | "objectType"> {
+  ): Omit<this, "max" | OmitType> {
     this.intAttributes.max = value;
     return this;
   }

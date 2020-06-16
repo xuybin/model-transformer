@@ -9,7 +9,7 @@ const TYPE = {
   json: { ts: "object" },
   boolean: { ts: "boolean" },
 };
-export type OmitType= "array" | "attributes" | "fieldType" | "objectType"
+export type OmitType = "array" | "attributes" | "fieldType" | "objectType";
 export class Field {
   protected readonly _attributes: {
     null?: true;
@@ -55,7 +55,7 @@ export class Field {
     return this._attributes;
   }
 
-  public get id(): Omit<this,"id" | OmitType> {
+  public get id(): Omit<this, "id" | OmitType> {
     if (this._attributes.id) {
       throw new Error("Expected to be called once");
     }
@@ -63,7 +63,7 @@ export class Field {
     return this;
   }
 
-  public get null(): Omit<this,"null" | OmitType>  {
+  public get null(): Omit<this, "null" | OmitType> {
     if (this._attributes.null) {
       throw new Error("Expected to be called once");
     }
@@ -75,7 +75,7 @@ export class Field {
     return this;
   }
 
-  public get unique():Omit<this,"unique" | OmitType> {
+  public get unique(): Omit<this, "unique" | OmitType> {
     if (this._attributes.unique) {
       throw new Error("Expected to be called once");
     }
@@ -83,7 +83,7 @@ export class Field {
     return this;
   }
 
-  public get updatedAt(): Omit<this,"updatedAt" | OmitType>{
+  public get updatedAt(): Omit<this, "updatedAt" | OmitType> {
     if (this._attributes.updatedAt) {
       throw new Error("Expected to be called once");
     }
@@ -101,7 +101,7 @@ export class Field {
 
   public default(
     value: string | number | boolean | "uuid()" | "cuid()" | "now()",
-  ): Omit<this,"default" | OmitType> {
+  ): Omit<this, "default" | OmitType> {
     if (this._attributes.default) {
       throw new Error("Expected to be called once");
     }
@@ -141,7 +141,7 @@ export class Field {
   public relation(
     references: string[],
     name?: string,
-  ): Omit<this,"relation" | OmitType> {
+  ): Omit<this, "relation" | OmitType> {
     if (this._attributes.relation) {
       throw new Error("Expected to be called once");
     }

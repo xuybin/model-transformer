@@ -30,7 +30,7 @@ test("schema_type", () => {
 
   assertEquals(Schema.User.attributes.index.join(","), "name,email");
   assertEquals(Schema.User.fields.id.attributes.id, true);
-  //assertEquals(Schema.User.fields.age.attributes.min, 3);
+  assertEquals(Schema.User.fields.age.attributes.min, 3);
   assertEquals(Schema.User.fields.id.attributes.id, true);
   assertEquals(Schema.Post.fields.title.objectType(), `string`);
   assertEquals(Schema.Post.fields.flag.fieldType, `int[]`);
