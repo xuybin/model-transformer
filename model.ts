@@ -1,12 +1,11 @@
-import { Field } from "./validator/type.ts";
-import { IntField, int } from "./validator/int.ts";
-import { FloatField, float } from "./validator/float.ts";
+import { IntField } from "./validator/int.ts";
+import { FloatField } from "./validator/float.ts";
 import { BooleanField } from "./validator/boolean.ts";
 import { StringField } from "./validator/string.ts";
 import { DateTimeField } from "./validator/dateTime.ts";
 import { JsonField } from "./validator/json.ts";
 
-export type FieldType =
+type FieldType =
   | Pick<IntField, "attributes">
   | Pick<FloatField, "attributes">
   | Pick<BooleanField, "attributes">
@@ -14,7 +13,7 @@ export type FieldType =
   | Pick<DateTimeField, "attributes">
   | Pick<JsonField, "attributes">;
 
-export type ResolveType<S> = S extends { [name: string]: FieldType } ? keyof S
+type ResolveType<S> = S extends { [name: string]: FieldType } ? keyof S
   : unknown extends S ? unknown
   : never;
 

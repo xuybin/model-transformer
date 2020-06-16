@@ -1,11 +1,9 @@
-import { Model, FieldType, model } from "./model.ts";
+import { Model } from "./model.ts";
 
-export type Schema<F extends { [name: string]: FieldType }> = {
-  [name: string]: Pick<Model<F>, "attributes" | "fields">;
-};
-
-export function schema<F extends { [name: string]: FieldType }>(
-  schema: Schema<F>,
+export function schema<
+  S extends { [name: string]: Pick<Model, "attributes" | "fields"> },
+>(
+  schema: S,
 ) {
-  return schema;
+  return schema as { [K in keyof S]: Pick<S[K], "attributes" | "fields"> };
 }

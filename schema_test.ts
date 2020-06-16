@@ -19,6 +19,9 @@ test("schema_type", () => {
       name: string().null,
       createdAt: dateTime().default("now()"),
     }).index("name", "email"),
+    Post: model({
+      id: int().id.default("autoincrement()"),
+    }),
   });
 
   assertEquals(Schema.User.attributes.index.join(","), "name,email");

@@ -2,7 +2,7 @@ import {
   assertEquals,
   assertThrows,
 } from "https://deno.land/std/testing/asserts.ts";
-import { model, ResolveType } from "./model.ts";
+import { model } from "./model.ts";
 
 import { int } from "./validator/int.ts";
 import { string } from "./validator/string.ts";
