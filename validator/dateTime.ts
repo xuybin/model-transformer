@@ -8,7 +8,7 @@ export class DateTimeField extends Field {
 
 export function dateTime() {
   return new DateTimeField() as Omit<
-  DateTimeField,
-  OmitType
->;
+    DateTimeField,
+    OmitType
+  >;
 }

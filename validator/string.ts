@@ -8,7 +8,7 @@ export class StringField extends Field {
 
 export function string() {
   return new StringField() as Omit<
-  StringField,
-  OmitType
->;
+    StringField,
+    OmitType
+  >;
 }

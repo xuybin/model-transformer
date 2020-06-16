@@ -8,7 +8,7 @@ export class JsonField extends Field {
 
 export function json() {
   return new JsonField() as Omit<
-  JsonField,
-  OmitType
->;
+    JsonField,
+    OmitType
+  >;
 }

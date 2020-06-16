@@ -8,7 +8,7 @@ export class BooleanField extends Field {
 
 export function boolean() {
   return new BooleanField() as Omit<
-  BooleanField,
-  OmitType
->;
+    BooleanField,
+    OmitType
+  >;
 }
