@@ -1,10 +1,13 @@
-export const TYPE = {
-  string: String.name.toLowerCase(),
-  dateTime: String.name.toLowerCase(),
-  float: Number.name.toLowerCase(),
-  int: Number.name.toLowerCase(),
-  json: Object.name.toLowerCase(),
-  boolean: Boolean.name.toLowerCase(),
+type ObjectType = Record<"ts", string>;
+
+const TYPE: Record<string, ObjectType> = {
+  string: { ts: "string" },
+  dateTime: { ts: "string" },
+  enum: { ts: "enum" },
+  float: { ts: "number" },
+  int: { ts: "number" },
+  json: { ts: "object" },
+  boolean: { ts: "boolean" },
 };
 
 export class Field {
@@ -13,6 +16,7 @@ export class Field {
     id?: true;
     unique?: true;
     updatedAt?: true;
+    array?: true;
     default?: string | number | boolean | "uuid()" | "cuid()" | "now()";
     relation?: {
       name?: string;
@@ -23,6 +27,7 @@ export class Field {
     id: undefined,
     unique: undefined,
     updatedAt: undefined,
+    array: undefined,
     default: undefined,
     relation: undefined,
   };
@@ -37,8 +42,8 @@ export class Field {
 
   public readonly fieldType: keyof (typeof TYPE);
 
-  public get objectType(): string {
-    return TYPE[this.fieldType];
+  public objectType(language: keyof ObjectType = "ts"): string {
+    return TYPE[this.fieldType][language];
   }
 
   public get id(): this {
@@ -84,15 +89,20 @@ export class Field {
     return this;
   }
 
+  public get array(): this {
+    this._attributes.array = true;
+    return this;
+  }
+
   public default(
     value: string | number | boolean | "uuid()" | "cuid()" | "now()",
   ): this {
     if (this._attributes.default) {
       throw new Error("Expected to be called once");
     }
-    if (typeof value != this.objectType) {
+    if (typeof value != this.objectType()) {
       throw new Error(
-        `Expected to be called with 'default(*:${this.objectType})' for '${this.fieldType}'`,
+        `Expected to be called with 'default(*:${this.objectType()})' for '${this.fieldType}'`,
       );
     } else if (
       (value == "uuid()" || value == "cuid()") && this.fieldType != "string"

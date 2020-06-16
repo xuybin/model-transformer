@@ -7,7 +7,7 @@ import { int } from "./int.ts";
 const { test } = Deno;
 
 test("int_type", () => {
-  assertEquals(int().objectType, "number");
+  assertEquals(int().objectType(), "number");
   assertEquals(int().fieldType, "int");
   assertThrows(
     () => {
