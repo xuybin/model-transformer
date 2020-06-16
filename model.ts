@@ -19,21 +19,23 @@ type ResolveType<S> = S extends { [name: string]: FieldType } ? keyof S
   : never;
 
 export class Model<
-  F extends { [name: string]: Omit<FieldType, OmitType> } = {
+  M extends {
+    [name: string]: Pick<FieldType, "attributes" | "fieldType" | "objectType">;
+  } = {
     [name: string]: FieldType;
   },
 > {
   private readonly _attributes: {
-    index: Array<ResolveType<F>>;
-    id: Array<ResolveType<F>>;
-    unique: Array<ResolveType<F>>;
+    index: Array<ResolveType<M>>;
+    id: Array<ResolveType<M>>;
+    unique: Array<ResolveType<M>>;
   } = { index: [], id: [], unique: [] };
 
   public get attributes() {
     return this._attributes;
   }
 
-  public unique(...unique: Array<ResolveType<F>>): this {
+  public unique(...unique: Array<ResolveType<M>>): this {
     if (this._attributes.unique.length > 0) {
       throw new Error("Expected to be called once");
     }
@@ -44,7 +46,7 @@ export class Model<
     return this;
   }
 
-  public id(...id: Array<ResolveType<F>>): this {
+  public id(...id: Array<ResolveType<M>>): this {
     if (this._attributes.id.length > 0) {
       throw new Error("Expected to be called once");
     }
@@ -55,7 +57,7 @@ export class Model<
     return this;
   }
 
-  public index(...index: Array<ResolveType<F>>): this {
+  public index(...index: Array<ResolveType<M>>): this {
     if (this._attributes.index.length > 0) {
       throw new Error("Expected to be called once");
     }
@@ -66,13 +68,15 @@ export class Model<
     return this;
   }
 
-  private readonly _fields: F;
+  private readonly _fields: M;
 
-  public get fields(): F {
+  public get fields(): {
+    [K in keyof M]: Pick<M[K], "attributes" | "fieldType" | "objectType">;
+  } {
     return this._fields;
   }
 
-  constructor(fields: F) {
+  constructor(fields: M) {
     this._fields = fields;
   }
 }
