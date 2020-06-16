@@ -12,7 +12,8 @@ export class Field {
     null?: true;
     id?: true;
     unique?: true;
-    default?: unknown;
+    updatedAt?: true;
+    default?: string | number | boolean | "uuid()" | "cuid()" | "now()";
     relation?: {
       name?: string;
       references: string[];
@@ -21,6 +22,7 @@ export class Field {
     null: undefined,
     id: undefined,
     unique: undefined,
+    updatedAt: undefined,
     default: undefined,
     relation: undefined,
   };
@@ -51,6 +53,9 @@ export class Field {
     if (this._attributes.null) {
       throw new Error("Expected to be called once");
     }
+    if (this._attributes.default) {
+      throw new Error(`Expected to be called one of them 'null,default(*)'`);
+    }
     this._attributes.null = true;
     return this;
   }
@@ -63,9 +68,56 @@ export class Field {
     return this;
   }
 
-  public default(value: unknown): this {
+  public get updatedAt(): this {
+    if (this._attributes.updatedAt) {
+      throw new Error("Expected to be called once");
+    }
+    if (this.fieldType != "dateTime") {
+      throw new Error(`Expected to be called by '${this.fieldType}'`);
+    }
+    if (this._attributes.default) {
+      throw new Error(
+        `Expected to be called one of them 'updatedAt,default(*)'`,
+      );
+    }
+    this._attributes.updatedAt = true;
+    return this;
+  }
+
+  public default(
+    value: string | number | boolean | "uuid()" | "cuid()" | "now()",
+  ): this {
     if (this._attributes.default) {
       throw new Error("Expected to be called once");
+    }
+    if (
+      (value == "uuid()" || value == "cuid()") && this.fieldType != "string"
+    ) {
+      throw new Error(
+        `Expected to be called with 'default("uuid()")|default("cuid()")' for '${this.fieldType}'`,
+      );
+    } else if (value == "autoincrement()") {
+      throw new Error(
+        `Expected to use 'uuid()|cuid()' instead of 'autoincrement()'`,
+      );
+    } else if (typeof value != this.objectType) {
+      throw new Error(
+        `Expected to be called with 'default(*:${this.objectType})' for '${this.fieldType}'`,
+      );
+    }
+
+    if (this.fieldType == "dateTime" && value != "now()") {
+      throw new Error(
+        `Expected to be called with 'default("now()")' for '${this.fieldType}'`,
+      );
+    }
+    if (this._attributes.null) {
+      throw new Error(`Expected to be called one of them 'null,default(*)'`);
+    }
+    if (this._attributes.updatedAt) {
+      throw new Error(
+        `Expected to be called one of them 'updatedAt,default(*)'`,
+      );
     }
     this._attributes.default = value;
     return this;

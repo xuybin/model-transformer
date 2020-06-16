@@ -12,7 +12,7 @@ const { test } = Deno;
 
 test("model_type", () => {
   const User = model({
-    id: int().id.default("autoincrement()"),
+    id: string().id.default("cuid()"),
     userName: string().unique,
     email: string().unique,
     name: string().null,
