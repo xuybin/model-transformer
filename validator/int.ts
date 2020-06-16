@@ -1,4 +1,4 @@
-import { Field } from "./type.ts";
+import { Field, OmitType } from "./type.ts";
 
 export class IntField extends Field {
   constructor() {
@@ -14,13 +14,13 @@ export class IntField extends Field {
 
   public min(
     value: number,
-  ): Omit<this, "min" | "attributes" | "fieldType" | "objectType"> {
+  ): Omit<this, "min" |"array" | "attributes" | "fieldType" | "objectType"> {
     this.intAttributes.min = value;
     return this;
   }
   public max(
     value: number,
-  ): Omit<this, "max" | "attributes" | "fieldType" | "objectType"> {
+  ): Omit<this, "max" |"array" | "attributes" | "fieldType" | "objectType"> {
     this.intAttributes.max = value;
     return this;
   }
@@ -36,6 +36,6 @@ export class IntField extends Field {
 export function int() {
   return new IntField() as Omit<
     IntField,
-    "array" | "attributes" | "fieldType" | "objectType"
+    OmitType
   >;
 }
