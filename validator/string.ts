@@ -1,4 +1,4 @@
-import { Field } from "./type.ts";
+import { Field, OmitType } from "./type.ts";
 
 export class StringField extends Field {
   constructor() {
@@ -7,5 +7,8 @@ export class StringField extends Field {
 }
 
 export function string() {
-  return new StringField();
+  return new StringField() as Omit<
+  StringField,
+  OmitType
+>;
 }

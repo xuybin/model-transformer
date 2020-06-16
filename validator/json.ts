@@ -1,4 +1,4 @@
-import { Field } from "./type.ts";
+import { Field, OmitType } from "./type.ts";
 
 export class JsonField extends Field {
   constructor() {
@@ -7,5 +7,8 @@ export class JsonField extends Field {
 }
 
 export function json() {
-  return new JsonField();
+  return new JsonField() as Omit<
+  JsonField,
+  OmitType
+>;
 }

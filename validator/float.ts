@@ -1,4 +1,4 @@
-import { Field } from "./type.ts";
+import { Field , OmitType} from "./type.ts";
 
 export class FloatField extends Field {
   constructor() {
@@ -7,5 +7,8 @@ export class FloatField extends Field {
 }
 
 export function float() {
-  return new FloatField();
+  return new FloatField()  as Omit<
+  FloatField,
+  OmitType
+>;
 }

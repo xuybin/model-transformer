@@ -1,4 +1,4 @@
-import { Field } from "./type.ts";
+import { Field, OmitType } from "./type.ts";
 
 export class BooleanField extends Field {
   constructor() {
@@ -7,5 +7,8 @@ export class BooleanField extends Field {
 }
 
 export function boolean() {
-  return new BooleanField();
+  return new BooleanField() as Omit<
+  BooleanField,
+  OmitType
+>;
 }

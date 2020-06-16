@@ -1,4 +1,4 @@
-import { Field } from "./type.ts";
+import { Field, OmitType } from "./type.ts";
 
 export class DateTimeField extends Field {
   constructor() {
@@ -7,5 +7,8 @@ export class DateTimeField extends Field {
 }
 
 export function dateTime() {
-  return new DateTimeField();
+  return new DateTimeField() as Omit<
+  DateTimeField,
+  OmitType
+>;
 }
