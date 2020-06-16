@@ -32,14 +32,13 @@ export class Field {
   private _array = false;
   private readonly _fieldType: keyof (typeof TYPE);
 
-  constructor(fieldType: keyof (typeof TYPE) | Field, array = false) {
-    if (fieldType instanceof Field) {
-      this._fieldType = fieldType._fieldType;
-      this._attributes = fieldType._attributes;
-    } else {
-      this._fieldType = fieldType;
-    }
-    this._array = array;
+  constructor(fieldType: keyof (typeof TYPE)) {
+    this._fieldType = fieldType;
+  }
+
+  public get array(): this {
+    this._array = true;
+    return this;
   }
 
   public get fieldType(): string {
@@ -56,7 +55,10 @@ export class Field {
     return this._attributes;
   }
 
-  public get id(): Omit<this, "id"|"attributes" | "fieldType" | "objectType"> {
+  public get id(): Omit<
+    this,
+    "id" | "array" | "attributes" | "fieldType" | "objectType"
+  > {
     if (this._attributes.id) {
       throw new Error("Expected to be called once");
     }
@@ -64,7 +66,10 @@ export class Field {
     return this;
   }
 
-  public get null(): Omit<this, "null"|"attributes" | "fieldType" | "objectType"> {
+  public get null(): Omit<
+    this,
+    "null" | "array" | "attributes" | "fieldType" | "objectType"
+  > {
     if (this._attributes.null) {
       throw new Error("Expected to be called once");
     }
@@ -76,7 +81,10 @@ export class Field {
     return this;
   }
 
-  public get unique(): Omit<this, "unique"|"attributes" | "fieldType" | "objectType"> {
+  public get unique(): Omit<
+    this,
+    "unique" | "array" | "attributes" | "fieldType" | "objectType"
+  > {
     if (this._attributes.unique) {
       throw new Error("Expected to be called once");
     }
@@ -86,7 +94,7 @@ export class Field {
 
   public get updatedAt(): Omit<
     this,
-    "updatedAt"|"attributes" | "fieldType" | "objectType"
+    "updatedAt" | "array" | "attributes" | "fieldType" | "objectType"
   > {
     if (this._attributes.updatedAt) {
       throw new Error("Expected to be called once");
@@ -105,7 +113,10 @@ export class Field {
 
   public default(
     value: string | number | boolean | "uuid()" | "cuid()" | "now()",
-  ): Omit<this, "default"|"attributes" | "fieldType" | "objectType"> {
+  ): Omit<
+    this,
+    "default" | "array" | "attributes" | "fieldType" | "objectType"
+  > {
     if (this._attributes.default) {
       throw new Error("Expected to be called once");
     }
@@ -145,7 +156,10 @@ export class Field {
   public relation(
     references: string[],
     name?: string,
-  ): Omit<this, "relation"|"attributes" | "fieldType" | "objectType"> {
+  ): Omit<
+    this,
+    "relation" | "array" | "attributes" | "fieldType" | "objectType"
+  > {
     if (this._attributes.relation) {
       throw new Error("Expected to be called once");
     }

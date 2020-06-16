@@ -89,7 +89,7 @@ export function model<
   for (const fkey in model) {
     const element = model[fkey];
     if (Array.isArray(element)) {
-      model[fkey] = new Field(element[0], true) as typeof element[0];
+      model[fkey] = (element[0]).array;
     }
   }
   return new Model(

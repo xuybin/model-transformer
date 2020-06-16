@@ -23,7 +23,7 @@ test("int_type", () => {
   );
   assertThrows(
     () => {
-      int().id.id;
+      int().id.default(1).id;
     },
     Error,
     "Expected to be called once",
