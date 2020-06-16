@@ -15,12 +15,14 @@ test("schema_type", () => {
       id: string().id.default("cuid()"),
       email: string().unique,
       name: string().null,
+      age: int().default(18).min(3).max(130),
       createdAt: dateTime().default("now()"),
       updatedAt: dateTime().updatedAt,
     }).index("name", "email"),
     Post: model({
       id: string().id.default("cuid()"),
       title: string(),
+      flag: [int().null],
       content: string().null,
       published: boolean().default(false),
     }),
@@ -28,4 +30,10 @@ test("schema_type", () => {
 
   assertEquals(Schema.User.attributes.index.join(","), "name,email");
   assertEquals(Schema.User.fields.id.attributes.id, true);
+  assertEquals(Schema.User.fields.age.attributes.min, 3);
+  assertEquals(Schema.User.fields.id.attributes.id, true);
+  assertEquals(Schema.Post.fields.title.objectType(), `string`);
+  assertEquals(Schema.Post.fields.flag.fieldType, `int[]`);
+  assertEquals(Schema.Post.fields.flag.objectType(), `number[]`);
+  assertEquals(Schema.Post.fields.flag.attributes.null, true);
 });

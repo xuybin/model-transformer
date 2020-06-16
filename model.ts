@@ -1,3 +1,4 @@
+import { Field } from "./validator/type.ts";
 import { IntField } from "./validator/int.ts";
 import { FloatField } from "./validator/float.ts";
 import { BooleanField } from "./validator/boolean.ts";
@@ -6,12 +7,12 @@ import { DateTimeField } from "./validator/dateTime.ts";
 import { JsonField } from "./validator/json.ts";
 
 type FieldType =
-  | Pick<IntField, "attributes">
-  | Pick<FloatField, "attributes">
-  | Pick<BooleanField, "attributes">
-  | Pick<StringField, "attributes">
-  | Pick<DateTimeField, "attributes">
-  | Pick<JsonField, "attributes">;
+  | Pick<IntField, "attributes" | "fieldType" | "objectType">
+  | Pick<FloatField, "attributes" | "fieldType" | "objectType">
+  | Pick<BooleanField, "attributes" | "fieldType" | "objectType">
+  | Pick<StringField, "attributes" | "fieldType" | "objectType">
+  | Pick<DateTimeField, "attributes" | "fieldType" | "objectType">
+  | Pick<JsonField, "attributes" | "fieldType" | "objectType">;
 
 type ResolveType<S> = S extends { [name: string]: FieldType } ? keyof S
   : unknown extends S ? unknown
@@ -74,6 +75,31 @@ export class Model<
   }
 }
 
-export function model<F extends { [name: string]: FieldType }>(model: F) {
-  return new Model(model);
+export function model<
+  T extends FieldType,
+  F extends { [name: string]: T | Array<T> },
+>(
+  model: {
+    [K in keyof F]: Omit<
+      ResolveArray<T, F[K]>,
+      "attributes" | "fieldType" | "objectType"
+    >;
+  },
+) {
+  for (const fkey in model) {
+    const element = model[fkey];
+    if (Array.isArray(element)) {
+      model[fkey] = new Field(element[0], true) as typeof element[0];
+    }
+  }
+  return new Model(
+    model as {
+      [K in keyof F]: Pick<
+        ResolveArray<T, F[K]>,
+        "attributes" | "fieldType" | "objectType"
+      >;
+    },
+  );
 }
+
+export type ResolveArray<T, F> = F extends Array<T> ? F[0] : T;

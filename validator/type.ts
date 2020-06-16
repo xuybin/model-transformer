@@ -1,6 +1,6 @@
-type ObjectType = Record<"ts", string>;
+type ObjectType = { ts: string };
 
-const TYPE: Record<string, ObjectType> = {
+const TYPE = {
   string: { ts: "string" },
   dateTime: { ts: "string" },
   enum: { ts: "enum" },
@@ -11,12 +11,11 @@ const TYPE: Record<string, ObjectType> = {
 };
 
 export class Field {
-  private readonly _attributes: {
+  protected readonly _attributes: {
     null?: true;
     id?: true;
     unique?: true;
     updatedAt?: true;
-    array?: true;
     default?: string | number | boolean | "uuid()" | "cuid()" | "now()";
     relation?: {
       name?: string;
@@ -27,26 +26,37 @@ export class Field {
     id: undefined,
     unique: undefined,
     updatedAt: undefined,
-    array: undefined,
     default: undefined,
     relation: undefined,
   };
+  private _array = false;
+  private readonly _fieldType: keyof (typeof TYPE);
+
+  constructor(fieldType: keyof (typeof TYPE) | Field, array = false) {
+    if (fieldType instanceof Field) {
+      this._fieldType = fieldType._fieldType;
+      this._attributes = fieldType._attributes;
+    } else {
+      this._fieldType = fieldType;
+    }
+    this._array = array;
+  }
+
+  public get fieldType(): string {
+    return this._array ? `${this._fieldType}[]` : `${this._fieldType}`;
+  }
+
+  public objectType(language: keyof ObjectType = "ts"): string {
+    return this._array
+      ? `${TYPE[this._fieldType][language]}[]`
+      : `${TYPE[this._fieldType][language]}`;
+  }
 
   public get attributes() {
     return this._attributes;
   }
 
-  constructor(fieldType: keyof (typeof TYPE)) {
-    this.fieldType = fieldType;
-  }
-
-  public readonly fieldType: keyof (typeof TYPE);
-
-  public objectType(language: keyof ObjectType = "ts"): string {
-    return TYPE[this.fieldType][language];
-  }
-
-  public get id(): this {
+  public get id(): Omit<this, "id"|"attributes" | "fieldType" | "objectType"> {
     if (this._attributes.id) {
       throw new Error("Expected to be called once");
     }
@@ -54,7 +64,7 @@ export class Field {
     return this;
   }
 
-  public get null(): this {
+  public get null(): Omit<this, "null"|"attributes" | "fieldType" | "objectType"> {
     if (this._attributes.null) {
       throw new Error("Expected to be called once");
     }
@@ -62,10 +72,11 @@ export class Field {
       throw new Error(`Expected to be called one of them 'null,default(*)'`);
     }
     this._attributes.null = true;
+
     return this;
   }
 
-  public get unique(): this {
+  public get unique(): Omit<this, "unique"|"attributes" | "fieldType" | "objectType"> {
     if (this._attributes.unique) {
       throw new Error("Expected to be called once");
     }
@@ -73,11 +84,14 @@ export class Field {
     return this;
   }
 
-  public get updatedAt(): this {
+  public get updatedAt(): Omit<
+    this,
+    "updatedAt"|"attributes" | "fieldType" | "objectType"
+  > {
     if (this._attributes.updatedAt) {
       throw new Error("Expected to be called once");
     }
-    if (this.fieldType != "dateTime") {
+    if (this._fieldType != "dateTime") {
       throw new Error(`Expected to be called by 'dateTime'`);
     }
     if (this._attributes.default) {
@@ -89,23 +103,18 @@ export class Field {
     return this;
   }
 
-  public get array(): this {
-    this._attributes.array = true;
-    return this;
-  }
-
   public default(
     value: string | number | boolean | "uuid()" | "cuid()" | "now()",
-  ): this {
+  ): Omit<this, "default"|"attributes" | "fieldType" | "objectType"> {
     if (this._attributes.default) {
       throw new Error("Expected to be called once");
     }
     if (typeof value != this.objectType()) {
       throw new Error(
-        `Expected to be called with 'default(*:${this.objectType()})' for '${this.fieldType}'`,
+        `Expected to be called with 'default(*:${this.objectType()})' for '${this._fieldType}'`,
       );
     } else if (
-      (value == "uuid()" || value == "cuid()") && this.fieldType != "string"
+      (value == "uuid()" || value == "cuid()") && this._fieldType != "string"
     ) {
       throw new Error(
         `Expected to be called with 'default("uuid()")|default("cuid()")' for 'string'`,
@@ -116,9 +125,9 @@ export class Field {
       );
     }
 
-    if (this.fieldType == "dateTime" && value != "now()") {
+    if (this._fieldType == "dateTime" && value != "now()") {
       throw new Error(
-        `Expected to be called with 'default("now()")' for '${this.fieldType}'`,
+        `Expected to be called with 'default("now()")' for '${this._fieldType}'`,
       );
     }
     if (this._attributes.null) {
@@ -133,7 +142,10 @@ export class Field {
     return this;
   }
 
-  public relation(references: string[], name?: string): this {
+  public relation(
+    references: string[],
+    name?: string,
+  ): Omit<this, "relation"|"attributes" | "fieldType" | "objectType"> {
     if (this._attributes.relation) {
       throw new Error("Expected to be called once");
     }

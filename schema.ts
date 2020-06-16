@@ -1,7 +1,7 @@
 import { Model } from "./model.ts";
 
 export function schema<
-  S extends { [name: string]: Pick<Model, "attributes" | "fields"> },
+  S extends Record<string, Pick<Model, "attributes" | "fields">>,
 >(
   schema: S,
 ) {
