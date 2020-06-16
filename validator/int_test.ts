@@ -23,4 +23,18 @@ test("int_type", () => {
     Error,
     "Expected to be called one of them 'null,default(*)'",
   );
+  assertThrows(
+    () => {
+      int().id.id;
+    },
+    Error,
+    "Expected to be called once",
+  );
+  assertThrows(
+    () => {
+      int().updatedAt;
+    },
+    Error,
+    "Expected to be called by 'dateTime'",
+  );
 });

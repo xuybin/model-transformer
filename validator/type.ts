@@ -73,7 +73,7 @@ export class Field {
       throw new Error("Expected to be called once");
     }
     if (this.fieldType != "dateTime") {
-      throw new Error(`Expected to be called by '${this.fieldType}'`);
+      throw new Error(`Expected to be called by 'dateTime'`);
     }
     if (this._attributes.default) {
       throw new Error(
@@ -90,19 +90,19 @@ export class Field {
     if (this._attributes.default) {
       throw new Error("Expected to be called once");
     }
-    if (
+    if (typeof value != this.objectType) {
+      throw new Error(
+        `Expected to be called with 'default(*:${this.objectType})' for '${this.fieldType}'`,
+      );
+    } else if (
       (value == "uuid()" || value == "cuid()") && this.fieldType != "string"
     ) {
       throw new Error(
-        `Expected to be called with 'default("uuid()")|default("cuid()")' for '${this.fieldType}'`,
+        `Expected to be called with 'default("uuid()")|default("cuid()")' for 'string'`,
       );
     } else if (value == "autoincrement()") {
       throw new Error(
         `Expected to use 'uuid()|cuid()' instead of 'autoincrement()'`,
-      );
-    } else if (typeof value != this.objectType) {
-      throw new Error(
-        `Expected to be called with 'default(*:${this.objectType})' for '${this.fieldType}'`,
       );
     }
 
