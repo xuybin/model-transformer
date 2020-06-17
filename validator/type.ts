@@ -20,17 +20,12 @@ export class Field {
     unique?: true;
     updatedAt?: true;
     default?: string | number | boolean | "uuid()" | "cuid()" | "now()";
-    relation?: {
-      name?: string;
-      references: string[];
-    };
   } = {
     null: undefined,
     id: undefined,
     unique: undefined,
     updatedAt: undefined,
     default: undefined,
-    relation: undefined,
   };
   protected _array = false;
   private readonly _fieldType: keyof (typeof TYPE);
@@ -88,6 +83,9 @@ export class Field {
   public get unique(): Omit<this, "unique" | OmitType> {
     if (this._attributes.unique) {
       throw new Error("Expected to be called once");
+    }
+    if (this.fieldType == "enum") {
+      throw new Error("Expected 'enum' no need to call for 'enum().*.unique'");
     }
     this._attributes.unique = true;
     return this;
@@ -148,20 +146,6 @@ export class Field {
       );
     }
     this._attributes.default = value;
-    return this;
-  }
-
-  public relation(
-    references: string[],
-    name?: string,
-  ): Omit<this, "relation" | OmitType> {
-    if (this._attributes.relation) {
-      throw new Error("Expected to be called once");
-    }
-    this._attributes.relation = {
-      name,
-      references,
-    };
     return this;
   }
 }

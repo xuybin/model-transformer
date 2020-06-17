@@ -28,20 +28,25 @@ test("schema_type", () => {
     Post: model({
       id: string().id.default("cuid()"),
       title: string(),
-      flag: [int().null],
       content: string().null,
       published: boolean().default(false),
-      author: ref("User"),
+      author: ref("User").relation(["id"]),
+      //flag: [int().null],
     }),
   });
 
   assertEquals(Schema.User.attributes.index.join(","), "name,email");
   assertEquals(Schema.User.fields.id.attributes.id, true);
   assertEquals(Schema.User.fields.age.attributes.min, 3);
-  assertEquals(Schema.User.fields.id.attributes.id, true);
   assertEquals(Schema.User.fields.status.attributes.default, "Enable");
   assertEquals(Schema.Post.fields.title.objectType(), `string`);
-  assertEquals(Schema.Post.fields.flag.fieldType, `int[]`);
-  assertEquals(Schema.Post.fields.flag.objectType(), `number[]`);
-  assertEquals(Schema.Post.fields.flag.attributes.null, true);
+
+  assertEquals(
+    Schema.Post.fields.author.attributes.relation?.references.join(","),
+    "id",
+  );
+
+  // assertEquals(Schema.Post.fields.flag.fieldType, `int[]`);
+  // assertEquals(Schema.Post.fields.flag.objectType(), `number[]`);
+  // assertEquals(Schema.Post.fields.flag.attributes.null, true);
 });

@@ -15,12 +15,18 @@ export class IntField extends Field {
   public min(
     value: number,
   ): Omit<this, "min" | OmitType> {
+    if (this.intAttributes.min) {
+      throw new Error("Expected to be called once");
+    }
     this.intAttributes.min = value;
     return this;
   }
   public max(
     value: number,
   ): Omit<this, "max" | OmitType> {
+    if (this.intAttributes.max) {
+      throw new Error("Expected to be called once");
+    }
     this.intAttributes.max = value;
     return this;
   }
