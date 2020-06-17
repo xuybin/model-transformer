@@ -17,6 +17,7 @@ test("model_type", () => {
     email: string().unique,
     name: string().null,
     createdAt: dateTime().default("now()"),
+    flag: [int().null],
   }).index("name", "email");
 
   assertEquals(User.attributes.index.join(","), "name,email");

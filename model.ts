@@ -88,7 +88,7 @@ export class Model<
 export function model<
   M extends { [name: string]: FieldType },
 >(
-  model: { [K in keyof M]: Pick<M[K], never> },
+  model: { [K in keyof M]: Pick<M[K], never> | Array<Pick<M[K], never>> },
 ) {
   for (const fkey in model) {
     const element = model[fkey];
@@ -98,3 +98,5 @@ export function model<
   }
   return new Model(model as { [K in keyof M]: M[K] });
 }
+export type ResolveArray<F, T extends FieldType = FieldType> = F extends
+  Array<T> ? T : F;
