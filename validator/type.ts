@@ -108,7 +108,10 @@ export class Field {
     if (this._attributes.default) {
       throw new Error("Expected to be called once");
     }
-    if (typeof value != this.objectType()) {
+    if (
+      typeof value !=
+        (this.objectType() == "enum" ? "string" : this.objectType())
+    ) {
       throw new Error(
         `Expected to be called with 'default(*:${this.objectType()})' for '${this._fieldType}'`,
       );

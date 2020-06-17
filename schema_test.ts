@@ -10,12 +10,17 @@ import { boolean } from "./validator/boolean.ts";
 const { test } = Deno;
 
 test("schema_type", () => {
+  enum Status {
+    Enable,
+    Disable,
+  }
   const Schema = schema({
     User: model({
       id: string().id.default("cuid()"),
       email: string().unique,
       name: string().null,
       age: int().min(3).default(18).max(130),
+      status: ref(Status).default("Enable"),
       createdAt: dateTime().default("now()"),
       updatedAt: dateTime().updatedAt,
       //posts: [ref("Post")],
@@ -34,6 +39,7 @@ test("schema_type", () => {
   assertEquals(Schema.User.fields.id.attributes.id, true);
   assertEquals(Schema.User.fields.age.attributes.min, 3);
   assertEquals(Schema.User.fields.id.attributes.id, true);
+  assertEquals(Schema.User.fields.status.attributes.default, "Enable");
   assertEquals(Schema.Post.fields.title.objectType(), `string`);
   assertEquals(Schema.Post.fields.flag.fieldType, `int[]`);
   assertEquals(Schema.Post.fields.flag.objectType(), `number[]`);
