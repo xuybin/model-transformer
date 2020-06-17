@@ -8,6 +8,7 @@ const TYPE = {
   int: { ts: "number" },
   json: { ts: "object" },
   boolean: { ts: "boolean" },
+  "": { ts: "" },
 };
 
 export type OmitType = "array" | "attributes" | "fieldType" | "objectType";
@@ -31,7 +32,7 @@ export class Field {
     default: undefined,
     relation: undefined,
   };
-  private _array = false;
+  protected _array = false;
   private readonly _fieldType: keyof (typeof TYPE);
 
   constructor(fieldType: keyof (typeof TYPE)) {

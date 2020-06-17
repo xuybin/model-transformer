@@ -6,7 +6,7 @@ import { StringField } from "./validator/string.ts";
 import { DateTimeField } from "./validator/dateTime.ts";
 import { JsonField } from "./validator/json.ts";
 
-type FieldType =
+export type FieldType =
   | Pick<IntField, "attributes" | "fieldType" | "objectType">
   | Pick<FloatField, "attributes" | "fieldType" | "objectType">
   | Pick<BooleanField, "attributes" | "fieldType" | "objectType">

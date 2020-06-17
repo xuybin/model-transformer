@@ -16,6 +16,7 @@ test("schema_type", () => {
       email: string().unique,
       name: string().null,
       age: int().min(3).default(18).max(130),
+      //\posts: ["Post"],
       createdAt: dateTime().default("now()"),
       updatedAt: dateTime().updatedAt,
     }).index("name", "email"),
