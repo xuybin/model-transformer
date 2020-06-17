@@ -24,8 +24,15 @@ test("enum_type", () => {
     name: string().null,
   }).index("name", "email");
 
-  assertEquals(ref(OrderStatus).fieldType, "enum");
-  assertEquals(ref(OrderStatus).objectType(), "enum");
-  assertEquals(ref("User").fieldType, "User");
-  assertEquals(ref("User").objectType(), "User");
+  // assertEquals(ref(OrderStatus).fieldType, "enum");
+  // assertEquals(ref(OrderStatus).objectType(), "enum");
+  // assertEquals(ref("User").fieldType, "User");
+  // assertEquals(ref("User").objectType(), "User");
+  assertThrows(
+    () => {
+      ref(User);
+    },
+    Error,
+    "Expected to be 'enum'",
+  );
 });

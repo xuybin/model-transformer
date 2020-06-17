@@ -5,6 +5,8 @@ import { BooleanField } from "./validator/boolean.ts";
 import { StringField } from "./validator/string.ts";
 import { DateTimeField } from "./validator/dateTime.ts";
 import { JsonField } from "./validator/json.ts";
+import { EnumField } from "./validator/enum.ts";
+import { ObjectField } from "./validator/object.ts";
 
 export type FieldType =
   | Pick<IntField, "attributes" | "fieldType" | "objectType">
@@ -12,7 +14,9 @@ export type FieldType =
   | Pick<BooleanField, "attributes" | "fieldType" | "objectType">
   | Pick<StringField, "attributes" | "fieldType" | "objectType">
   | Pick<DateTimeField, "attributes" | "fieldType" | "objectType">
-  | Pick<JsonField, "attributes" | "fieldType" | "objectType">;
+  | Pick<JsonField, "attributes" | "fieldType" | "objectType">
+  | Pick<EnumField, "attributes" | "fieldType" | "objectType">
+  | Pick<ObjectField, "attributes" | "fieldType" | "objectType">;
 
 type ResolveType<S> = S extends { [name: string]: FieldType } ? keyof S
   : unknown extends S ? unknown

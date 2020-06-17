@@ -1,7 +1,7 @@
 import { assertEquals } from "https://deno.land/std/testing/asserts.ts";
 import { schema } from "./schema.ts";
 import { model } from "./model.ts";
-
+import { ref } from "./ref.ts";
 import { int } from "./validator/int.ts";
 import { string } from "./validator/string.ts";
 import { dateTime } from "./validator/dateTime.ts";
@@ -16,9 +16,9 @@ test("schema_type", () => {
       email: string().unique,
       name: string().null,
       age: int().min(3).default(18).max(130),
-      //\posts: ["Post"],
       createdAt: dateTime().default("now()"),
       updatedAt: dateTime().updatedAt,
+      //posts: [ref("Post")],
     }).index("name", "email"),
     Post: model({
       id: string().id.default("cuid()"),
@@ -26,6 +26,7 @@ test("schema_type", () => {
       flag: [int().null],
       content: string().null,
       published: boolean().default(false),
+      author: ref("User"),
     }),
   });
 
