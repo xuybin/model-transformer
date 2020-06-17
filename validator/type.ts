@@ -9,7 +9,9 @@ const TYPE = {
   json: { ts: "object" },
   boolean: { ts: "boolean" },
 };
+
 export type OmitType = "array" | "attributes" | "fieldType" | "objectType";
+
 export class Field {
   protected readonly _attributes: {
     null?: true;
