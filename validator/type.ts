@@ -62,6 +62,9 @@ export class Field {
     if (this._attributes.id) {
       throw new Error("Expected to be called once");
     }
+    if (this.fieldType == "enum") {
+      throw new Error("Expected 'enum' no need to call for '*.id'");
+    }
     this._attributes.id = true;
     return this;
   }
@@ -70,9 +73,13 @@ export class Field {
     if (this._attributes.null) {
       throw new Error("Expected to be called once");
     }
+    if (this.fieldType == "enum") {
+      throw new Error("Expected 'enum' no need to call for '*.null'");
+    }
     if (this._attributes.default) {
       throw new Error(`Expected to be called one of them 'null,default(*)'`);
     }
+
     this._attributes.null = true;
 
     return this;
