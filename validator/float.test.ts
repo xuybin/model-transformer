@@ -34,14 +34,14 @@ test("float_type", () => {
       new FloatField().default(Number.MAX_VALUE);
     },
     Error,
-    "Expected value to be float,only in the range [-3.402823466E+38,3.402823466E+38]",
+    `Expected value to be float,only in the range ${Float.MAX_RANGE}`,
   );
   assertThrows(
     () => {
       new FloatField().default(-Number.MAX_VALUE);
     },
     Error,
-    "Expected value to be float,only in the range [-3.402823466E+38,3.402823466E+38]",
+    `Expected value to be float,only in the range ${Float.MAX_RANGE}`,
   );
   assertThrows(
     () => {
