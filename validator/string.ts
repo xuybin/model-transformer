@@ -24,6 +24,9 @@ export class StringField extends Field {
     if (this._attributes.id) {
       throw onceError;
     }
+    if (this._attributes.unique) {
+      throw new Error(`Expected method to be mutually exclusive with 'unique'`);
+    }
     this._attributes.id = true;
     return this;
   }
@@ -31,6 +34,9 @@ export class StringField extends Field {
   public get null(): Omit<this, "null" | OmitType> {
     if (this._attributes.null) {
       throw onceError;
+    }
+    if (this._attributes.id) {
+      throw new Error(`Expected method to be mutually exclusive with 'id'`);
     }
     if (this._attributes.default) {
       throw new Error(
@@ -44,6 +50,9 @@ export class StringField extends Field {
   public get unique(): Omit<this, "unique" | OmitType> {
     if (this._attributes.unique) {
       throw onceError;
+    }
+    if (this._attributes.id) {
+      throw new Error(`Expected method to be mutually exclusive with 'id'`);
     }
     this._attributes.unique = true;
     return this;
