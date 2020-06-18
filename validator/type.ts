@@ -12,21 +12,9 @@ const TYPE = {
 };
 
 export type OmitType = "array" | "attributes" | "fieldType" | "objectType";
+export const onceError = new Error("Expected method to be called once");
 
 export class Field {
-  protected readonly _attributes: {
-    null?: true;
-    id?: true;
-    unique?: true;
-    updatedAt?: true;
-    default?: string | number | boolean | "uuid()" | "cuid()" | "now()";
-  } = {
-    null: undefined,
-    id: undefined,
-    unique: undefined,
-    updatedAt: undefined,
-    default: undefined,
-  };
   protected _array = false;
   private readonly _fieldType: keyof (typeof TYPE);
 
@@ -47,105 +35,5 @@ export class Field {
     return this._array
       ? `${TYPE[this._fieldType][language]}[]`
       : `${TYPE[this._fieldType][language]}`;
-  }
-
-  public get attributes() {
-    return this._attributes;
-  }
-
-  public get id(): Omit<this, "id" | OmitType> {
-    if (this._attributes.id) {
-      throw new Error("Expected to be called once");
-    }
-    if (this.fieldType == "enum") {
-      throw new Error("Expected 'enum' no need to call for 'enum().*.id'");
-    }
-    this._attributes.id = true;
-    return this;
-  }
-
-  public get null(): Omit<this, "null" | OmitType> {
-    if (this._attributes.null) {
-      throw new Error("Expected to be called once");
-    }
-    if (this.fieldType == "enum") {
-      throw new Error("Expected 'enum' no need to call for 'enum().*.null'");
-    }
-    if (this._attributes.default) {
-      throw new Error(`Expected to be called one of them 'null,default(*)'`);
-    }
-
-    this._attributes.null = true;
-
-    return this;
-  }
-
-  public get unique(): Omit<this, "unique" | OmitType> {
-    if (this._attributes.unique) {
-      throw new Error("Expected to be called once");
-    }
-    if (this.fieldType == "enum") {
-      throw new Error("Expected 'enum' no need to call for 'enum().*.unique'");
-    }
-    this._attributes.unique = true;
-    return this;
-  }
-
-  public get updatedAt(): Omit<this, "updatedAt" | OmitType> {
-    if (this._attributes.updatedAt) {
-      throw new Error("Expected to be called once");
-    }
-    if (this._fieldType != "dateTime") {
-      throw new Error(`Expected to be called by 'dateTime'`);
-    }
-    if (this._attributes.default) {
-      throw new Error(
-        `Expected to be called one of them 'updatedAt,default(*)'`,
-      );
-    }
-    this._attributes.updatedAt = true;
-    return this;
-  }
-
-  public default(
-    value: string | number | boolean | "uuid()" | "cuid()" | "now()",
-  ): Omit<this, "default" | OmitType> {
-    if (this._attributes.default) {
-      throw new Error("Expected to be called once");
-    }
-    if (
-      typeof value !=
-        (this.objectType() == "enum" ? "string" : this.objectType())
-    ) {
-      throw new Error(
-        `Expected to be called with 'default(*:${this.objectType()})' for '${this._fieldType}'`,
-      );
-    } else if (
-      (value == "uuid()" || value == "cuid()") && this._fieldType != "string"
-    ) {
-      throw new Error(
-        `Expected to be called with 'default("uuid()")|default("cuid()")' for 'string'`,
-      );
-    } else if (value == "autoincrement()") {
-      throw new Error(
-        `Expected to use 'uuid()|cuid()' instead of 'autoincrement()'`,
-      );
-    }
-
-    if (this._fieldType == "dateTime" && value != "now()") {
-      throw new Error(
-        `Expected to be called with 'default("now()")' for '${this._fieldType}'`,
-      );
-    }
-    if (this._attributes.null) {
-      throw new Error(`Expected to be called one of them 'null,default(*)'`);
-    }
-    if (this._attributes.updatedAt) {
-      throw new Error(
-        `Expected to be called one of them 'updatedAt,default(*)'`,
-      );
-    }
-    this._attributes.default = value;
-    return this;
   }
 }

@@ -11,23 +11,9 @@ test("dateTime_type", () => {
   //assertEquals(dateTime().fieldType, "dateTime");
   assertThrows(
     () => {
-      dateTime().default("uuid()");
-    },
-    Error,
-    `Expected to be called with 'default("uuid()")|default("cuid()")' for 'string'`,
-  );
-  assertThrows(
-    () => {
-      dateTime().default("2020-03-19T14:21:00+0200");
-    },
-    Error,
-    `Expected to be called with 'default("now()")' for 'dateTime'`,
-  );
-  assertThrows(
-    () => {
       dateTime().default("now()").updatedAt;
     },
     Error,
-    "Expected to be called one of them 'updatedAt,default(*)'",
+    "Expected method to be mutually exclusive with 'default(*)'",
   );
 });

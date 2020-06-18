@@ -9,30 +9,9 @@ const { test } = Deno;
 test("int_type", () => {
   assertThrows(
     () => {
-      int().default("abc");
-    },
-    Error,
-    "Expected to be called with 'default(*:number)",
-  );
-  assertThrows(
-    () => {
       int().default(123).null;
     },
     Error,
-    "Expected to be called one of them 'null,default(*)'",
-  );
-  assertThrows(
-    () => {
-      int().id.default(1).id;
-    },
-    Error,
-    "Expected to be called once",
-  );
-  assertThrows(
-    () => {
-      int().updatedAt;
-    },
-    Error,
-    "Expected to be called by 'dateTime'",
+    "Expected method to be mutually exclusive with 'default(*)'",
   );
 });

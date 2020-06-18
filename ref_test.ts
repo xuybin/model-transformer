@@ -28,11 +28,11 @@ test("enum_type", () => {
   // assertEquals(ref(OrderStatus).objectType(), "enum");
   // assertEquals(ref("User").fieldType, "User");
   // assertEquals(ref("User").objectType(), "User");
-  assertThrows(
-    () => {
-      ref(User);
-    },
-    Error,
-    "Expected to be 'enum'",
-  );
+  // assertThrows(
+  //   () => {
+  //     ref(User);
+  //   },
+  //   Error,
+  //   "Expected to be 'enum'",
+  // );
 });
