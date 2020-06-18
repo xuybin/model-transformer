@@ -23,4 +23,18 @@ test("string_type", () => {
     Error,
     "Expected method to be mutually exclusive with 'id'",
   );
+  assertThrows(
+    () => {
+      string().default("uuid()").null;
+    },
+    Error,
+    "Expected method to be mutually exclusive with 'default(*)'",
+  );
+  assertThrows(
+    () => {
+      string().null.default("");
+    },
+    Error,
+    "Expected method to be mutually exclusive with 'null'",
+  );
 });
