@@ -8,6 +8,20 @@ const { test } = Deno;
 
 test("enum_type", () => {
   assertEquals(
+    (new EnumField("Status", ["Enable", "Disable"]).default(
+      "Disable",
+    ) as EnumField).fieldType,
+    "Status",
+  );
+
+  assertEquals(
+    (new EnumField("Status", ["Enable", "Disable"]).default(
+      "Disable",
+    ) as EnumField).objectType(),
+    "Status",
+  );
+
+  assertEquals(
     (new EnumField("Status", ["Enable", "Disable"]).null as EnumField)
       .attributes.null,
     true,
@@ -18,12 +32,6 @@ test("enum_type", () => {
       "Disable",
     ) as EnumField).attributes.default,
     "Disable",
-  );
-  assertEquals(
-    (new EnumField("Status", ["Enable", "Disable"]).default(
-      "Disable",
-    ) as EnumField).fieldType,
-    "Status",
   );
   assertEquals(
     new EnumField("Status", ["Enable", "Disable"]).attributes.enumValue.join(
