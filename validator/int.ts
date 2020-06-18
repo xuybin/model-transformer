@@ -39,6 +39,11 @@ export class IntField extends Field {
     if (this._attributes.unique) {
       throw onceError;
     }
+    if (this._attributes.default) {
+      throw new Error(
+        `Expected method to be mutually exclusive with 'default(*)'`,
+      );
+    }
     this._attributes.unique = true;
     return this;
   }
@@ -54,6 +59,9 @@ export class IntField extends Field {
     }
     if (this._attributes.null) {
       throw new Error(`Expected method to be mutually exclusive with 'null'`);
+    }
+    if (this._attributes.unique) {
+      throw new Error(`Expected method to be mutually exclusive with 'unique'`);
     }
     this._attributes.default = value;
     return this;
