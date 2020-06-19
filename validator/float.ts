@@ -120,10 +120,27 @@ export class FloatField extends Field {
   }
 
   public range(
-    left: ReturnType<typeof Float.gt> | ReturnType<typeof Float.gte>,
-    right: ReturnType<typeof Float.lt> | ReturnType<typeof Float.lte>,
+    left:
+      | ReturnType<typeof Float.gt>
+      | ReturnType<typeof Float.gte>
+      | "MIN_VALUE",
+    right:
+      | ReturnType<typeof Float.lt>
+      | ReturnType<typeof Float.lte>
+      | "MAX_VALUE",
   ): Omit<this, OmitType> {
-    const interval = new Interval(left, right);
+    const interval = new Interval(
+      left == "MIN_VALUE"
+        ? {
+          gte: Float.MIN_VALUE,
+        }
+        : left,
+      right == "MAX_VALUE"
+        ? {
+          lte: Float.MAX_VALUE,
+        }
+        : right,
+    );
     for (const iterator of this._attributes.range) {
       if (
         (interval.leftValue >= iterator.leftValue &&

@@ -22,6 +22,20 @@ test("float_type", () => {
   );
 
   assertEquals(
+    (new FloatField().range(
+      Float.gte(60),
+      "MAX_VALUE",
+    ) as FloatField).attributes.range.toString(),
+    "[60,3.402823466e+38]",
+  );
+  assertEquals(
+    (new FloatField().range(
+      "MIN_VALUE",
+      Float.lte(60),
+    ) as FloatField).attributes.range.toString(),
+    "[-3.402823466e+38,60]",
+  );
+  assertEquals(
     (new FloatField().range(Float.gt(0), Float.lte(18)).range(
       Float.gte(60),
       Float.lt(130),
