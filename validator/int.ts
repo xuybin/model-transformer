@@ -1,4 +1,43 @@
-import { Field, OmitType, onceError } from "./type.ts";
+import { Field, OmitType, onceError, Interval } from "./type.ts";
+
+export const Int = {
+  MIN_VALUE: -2147483648,
+  MAX_VALUE: 2147483647,
+  MAX_RANGE: "[-2147483648,2147483647]",
+
+  gt(value: number) {
+    if (value < this.MIN_VALUE || value > this.MAX_VALUE) {
+      throw new Error(
+        `Expected value to be float,only in the range ${this.MAX_RANGE}`,
+      );
+    }
+    return { gt: value };
+  },
+  gte(value: number) {
+    if (value < this.MIN_VALUE || value > this.MAX_VALUE) {
+      throw new Error(
+        `Expected value to be float,only in the range ${this.MAX_RANGE}`,
+      );
+    }
+    return { gte: value };
+  },
+  lt(value: number) {
+    if (value < this.MIN_VALUE || value > this.MAX_VALUE) {
+      throw new Error(
+        `Expected value to be float,only in the range ${this.MAX_RANGE}`,
+      );
+    }
+    return { lt: value };
+  },
+  lte(value: number) {
+    if (value < this.MIN_VALUE || value > this.MAX_VALUE) {
+      throw new Error(
+        `Expected value to be float,only in the range ${this.MAX_RANGE}`,
+      );
+    }
+    return { lte: value };
+  },
+};
 
 export class IntField extends Field {
   constructor() {
@@ -8,14 +47,12 @@ export class IntField extends Field {
     null?: true;
     unique?: true;
     default?: number;
-    min?: number;
-    max?: number;
+    range: Array<Interval>;
   } = {
     null: undefined,
     unique: undefined,
     default: undefined,
-    min: undefined,
-    max: undefined,
+    range: [],
   };
 
   public get attributes() {
@@ -55,7 +92,7 @@ export class IntField extends Field {
       throw onceError;
     }
     if (!Number.isInteger(value)) {
-      throw new Error(`Expect value to be a int "default(${value})"`);
+      throw new Error(`Expect value to be a int 'default(${value})'`);
     }
     if (this._attributes.null) {
       throw new Error(`Expected method to be mutually exclusive with 'null'`);
@@ -63,33 +100,34 @@ export class IntField extends Field {
     if (this._attributes.unique) {
       throw new Error(`Expected method to be mutually exclusive with 'unique'`);
     }
+    if (value < Int.MIN_VALUE || value > Int.MAX_VALUE) {
+      throw new Error(
+        `Expected value to be int,only in the range ${Int.MAX_RANGE}`,
+      );
+    }
     this._attributes.default = value;
     return this;
   }
 
-  public min(
-    value: number,
-  ): Omit<this, "min" | OmitType> {
-    if (this._attributes.min) {
-      throw onceError;
+  public range(
+    left: ReturnType<typeof Int.gt> | ReturnType<typeof Int.gte>,
+    right: ReturnType<typeof Int.lt> | ReturnType<typeof Int.lte>,
+  ): Omit<this, OmitType> {
+    const interval = new Interval(left, right);
+    for (const iterator of this._attributes.range) {
+      if (
+        (interval.leftValue >= iterator.leftValue &&
+          interval.leftValue <= iterator.rightValue) || (
+            interval.rightValue >= iterator.leftValue &&
+            interval.rightValue <= iterator.rightValue
+          )
+      ) {
+        throw new Error(
+          `Expect ${interval.toString()} not to cross or connect ${iterator.toString()}`,
+        );
+      }
     }
-    if (!Number.isInteger(value)) {
-      throw new Error(`Expect value to be a int "min(${value})"`);
-    }
-    this._attributes.min = value;
-    return this;
-  }
-
-  public max(
-    value: number,
-  ): Omit<this, "max" | OmitType> {
-    if (this._attributes.max) {
-      throw onceError;
-    }
-    if (!Number.isInteger(value)) {
-      throw new Error(`Expect value to be a int "max(${value})"`);
-    }
-    this._attributes.max = value;
+    this._attributes.range.push(interval);
     return this;
   }
 }

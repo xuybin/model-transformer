@@ -1,67 +1,42 @@
-import { Field, OmitType, onceError } from "./type.ts";
+import { Field, OmitType, onceError, Interval } from "./type.ts";
 
 export const Float = {
   MIN_VALUE: new Number("-3.402823466E+38").valueOf(),
   MAX_VALUE: new Number("3.402823466E+38").valueOf(),
   MAX_RANGE: "[-3.402823466E+38,3.402823466E+38]",
   gt(value: number) {
+    if (value < this.MIN_VALUE || value > this.MAX_VALUE) {
+      throw new Error(
+        `Expected value to be float,only in the range ${this.MAX_RANGE}`,
+      );
+    }
     return { gt: value };
   },
   gte(value: number) {
+    if (value < this.MIN_VALUE || value > this.MAX_VALUE) {
+      throw new Error(
+        `Expected value to be float,only in the range ${this.MAX_RANGE}`,
+      );
+    }
     return { gte: value };
   },
   lt(value: number) {
+    if (value < this.MIN_VALUE || value > this.MAX_VALUE) {
+      throw new Error(
+        `Expected value to be float,only in the range ${this.MAX_RANGE}`,
+      );
+    }
     return { lt: value };
   },
   lte(value: number) {
+    if (value < this.MIN_VALUE || value > this.MAX_VALUE) {
+      throw new Error(
+        `Expected value to be float,only in the range ${this.MAX_RANGE}`,
+      );
+    }
     return { lte: value };
   },
 };
-
-export class Interval {
-  public left: ReturnType<typeof Float.gt> | ReturnType<typeof Float.gte>;
-  public right: ReturnType<typeof Float.lt> | ReturnType<typeof Float.lte>;
-  constructor(
-    left: ReturnType<typeof Float.gt> | ReturnType<typeof Float.gte>,
-    right: ReturnType<typeof Float.lt> | ReturnType<typeof Float.lte>,
-  ) {
-    this.left = left;
-    this.right = right;
-    if (
-      this.leftValue < Float.MIN_VALUE || this.leftValue > Float.MAX_VALUE ||
-      this.rightValue < Float.MIN_VALUE || this.rightValue > Float.MAX_VALUE
-    ) {
-      throw new Error(
-        `Expected value to be float,only in the range ${Float.MAX_RANGE}`,
-      );
-    }
-  }
-  public get leftSymbol() {
-    return this.left.hasOwnProperty("gt") ? ">" : ">=";
-  }
-  public get rightSymbol() {
-    return this.right.hasOwnProperty("lt") ? "<" : "<=";
-  }
-  public get leftValue() {
-    return this.leftSymbol.includes("=")
-      ? (this.left as { gte: number }).gte
-      : (this.left as { gt: number }).gt;
-  }
-
-  public get rightValue() {
-    return this.rightSymbol.includes("=")
-      ? (this.right as { lte: number }).lte
-      : (this.right as { lt: number }).lt;
-  }
-
-  public toString() {
-    return `${
-      this.leftSymbol.includes("=") ? "[" : "("
-    }${this.leftValue},${this.rightValue}${
-      this.rightSymbol.includes("=") ? "]" : ")"
-    }`;
-  }
-}
 
 export class FloatField extends Field {
   constructor() {

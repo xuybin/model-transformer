@@ -37,3 +37,40 @@ export class Field {
       : `${TYPE[this._fieldType][language]}`;
   }
 }
+
+export class Interval {
+  public left: { gt: number } | { gte: number };
+  public right: { lt: number } | { lte: number };
+  constructor(
+    left: { gt: number } | { gte: number },
+    right: { lt: number } | { lte: number },
+  ) {
+    this.left = left;
+    this.right = right;
+  }
+  public get leftSymbol() {
+    return this.left.hasOwnProperty("gt") ? ">" : ">=";
+  }
+  public get rightSymbol() {
+    return this.right.hasOwnProperty("lt") ? "<" : "<=";
+  }
+  public get leftValue() {
+    return this.leftSymbol.includes("=")
+      ? (this.left as { gte: number }).gte
+      : (this.left as { gt: number }).gt;
+  }
+
+  public get rightValue() {
+    return this.rightSymbol.includes("=")
+      ? (this.right as { lte: number }).lte
+      : (this.right as { lt: number }).lt;
+  }
+
+  public toString() {
+    return `${
+      this.leftSymbol.includes("=") ? "[" : "("
+    }${this.leftValue},${this.rightValue}${
+      this.rightSymbol.includes("=") ? "]" : ")"
+    }`;
+  }
+}

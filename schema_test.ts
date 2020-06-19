@@ -2,7 +2,7 @@ import { assertEquals } from "https://deno.land/std/testing/asserts.ts";
 import { schema } from "./schema.ts";
 import { model } from "./model.ts";
 import { ref } from "./ref.ts";
-import { int } from "./validator/int.ts";
+import { int, Int } from "./validator/int.ts";
 import { string } from "./validator/string.ts";
 import { dateTime } from "./validator/dateTime.ts";
 import { boolean } from "./validator/boolean.ts";
@@ -19,7 +19,7 @@ test("schema_type", () => {
       id: string().id.default("cuid()"),
       email: string().unique,
       name: string().null,
-      age: int().min(3).default(18).max(130),
+      age: int().range(Int.gt(0), Int.lte(130)).default(18),
       status: ref("Status", Status).default("Enable"),
       createdAt: dateTime().default("now()"),
       updatedAt: dateTime().updatedAt,
@@ -37,7 +37,7 @@ test("schema_type", () => {
 
   assertEquals(Schema.User.attributes.index.join(","), "name,email");
   assertEquals(Schema.User.fields.id.attributes.id, true);
-  assertEquals(Schema.User.fields.age.attributes.min, 3);
+  assertEquals(Schema.User.fields.age.attributes.range.toString(), "(0,130]");
   assertEquals(Schema.User.fields.status.attributes.default, "Enable");
   assertEquals(Schema.Post.fields.title.objectType(), `string`);
   assertEquals(Schema.Post.fields.flag.fieldType, `int[]`);
