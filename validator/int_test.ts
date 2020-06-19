@@ -16,7 +16,20 @@ test("int_type", () => {
     (new IntField().default(12) as IntField).attributes.default,
     12,
   );
-
+  assertEquals(
+    (new IntField().range(
+      Int.gte(60),
+      "MAX_VALUE",
+    ) as IntField).attributes.range.toString(),
+    "[60,2147483647]",
+  );
+  assertEquals(
+    (new IntField().range(
+      "MIN_VALUE",
+      Int.lte(60),
+    ) as IntField).attributes.range.toString(),
+    "[-2147483648,60]",
+  );
   assertEquals(
     (new IntField().range(Int.gt(0), Int.lte(18)).range(
       Int.gte(60),
