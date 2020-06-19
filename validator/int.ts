@@ -110,10 +110,21 @@ export class IntField extends Field {
   }
 
   public range(
-    left: ReturnType<typeof Int.gt> | ReturnType<typeof Int.gte>,
-    right: ReturnType<typeof Int.lt> | ReturnType<typeof Int.lte>,
+    left: ReturnType<typeof Int.gt> | ReturnType<typeof Int.gte> | "MIN_VALUE",
+    right: ReturnType<typeof Int.lt> | ReturnType<typeof Int.lte> | "MAX_VALUE",
   ): Omit<this, OmitType> {
-    const interval = new Interval(left, right);
+    const interval = new Interval(
+      left == "MIN_VALUE"
+        ? {
+          gte: Int.MIN_VALUE,
+        }
+        : left,
+      right == "MAX_VALUE"
+        ? {
+          lte: Int.MAX_VALUE,
+        }
+        : right,
+    );
     for (const iterator of this._attributes.range) {
       if (
         (interval.leftValue >= iterator.leftValue &&
