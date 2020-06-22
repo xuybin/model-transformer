@@ -33,13 +33,20 @@ export class Model<
     index: Array<ResolveType<M>>;
     id: Array<ResolveType<M>>;
     unique: Array<ResolveType<M>>;
-  } = { index: [], id: [], unique: [] };
+    constraint: Array<
+      {
+        first: ResolveType<M>;
+        symbol: ">" | "<" | ">=" | "<=";
+        second: ResolveType<M>;
+      }
+    >;
+  } = { index: [], id: [], unique: [], constraint: [] };
 
   public get attributes() {
     return this._attributes;
   }
 
-  public unique(...unique: Array<ResolveType<M>>): this {
+  public unique(...unique: Array<ResolveType<M>>): Omit<this, "unique"> {
     if (this._attributes.unique.length > 0) {
       throw new Error("Expected to be called once");
     }
@@ -50,7 +57,7 @@ export class Model<
     return this;
   }
 
-  public id(...id: Array<ResolveType<M>>): this {
+  public id(...id: Array<ResolveType<M>>): Omit<this, "id"> {
     if (this._attributes.id.length > 0) {
       throw new Error("Expected to be called once");
     }
@@ -61,7 +68,7 @@ export class Model<
     return this;
   }
 
-  public index(...index: Array<ResolveType<M>>): this {
+  public index(...index: Array<ResolveType<M>>): Omit<this, "index"> {
     if (this._attributes.index.length > 0) {
       throw new Error("Expected to be called once");
     }
@@ -69,6 +76,28 @@ export class Model<
       throw new Error("Expect value to not be repeated");
     }
     this._attributes.index.push(...index);
+    return this;
+  }
+
+  public constraint(
+    fieldName1: ResolveType<M>,
+    symbol: ">" | ">=",
+    fieldName2: ResolveType<M>,
+  ): this {
+    if (fieldName1 == fieldName2) {
+      throw new Error("Expect the two fieldNames to be different");
+    }
+    for (const iterator of this._attributes.constraint) {
+      if (
+        `${iterator.first}_${iterator.symbol}_${iterator.second}` ==
+          `${fieldName1}_${symbol}_${fieldName2}`
+      ) {
+        throw new Error("Expect constraint to be different");
+      }
+    }
+    this._attributes.constraint.push(
+      { first: fieldName1, symbol, second: fieldName2 },
+    );
     return this;
   }
 

@@ -23,8 +23,10 @@ test("model_type", () => {
     email: string().unique,
     name: string().null,
     createdAt: dateTime().default("now()"),
+    startTime: dateTime(),
+    endTime: dateTime(),
     flag: [int().null],
-  }).index("name", "email");
+  }).index("name", "email").constraint("startTime", ">", "endTime");
 
   assertEquals(User.attributes.index.join(","), "name,email");
   assertEquals(User.fields.id.attributes.id, true);
@@ -35,7 +37,7 @@ test("model_type", () => {
   assertEquals(User.fields.status.objectType("go"), "Status");
   assertThrows(
     () => {
-      User.index("userName");
+      User.unique().index("userName");
     },
     Error,
     "Expected to be called once",

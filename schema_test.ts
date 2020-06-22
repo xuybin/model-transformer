@@ -24,7 +24,7 @@ test("schema_type", () => {
       createdAt: dateTime().default("now()"),
       updatedAt: dateTime().updatedAt,
       posts: [ref("Post")],
-    }).index("name", "email"),
+    }).index("name", "email").constraint("updatedAt", ">", "createdAt"),
     Post: model({
       id: string().id.default("cuid()"),
       title: string(),
@@ -39,6 +39,10 @@ test("schema_type", () => {
   assertEquals(Schema.User.fields.id.attributes.id, true);
   assertEquals(Schema.User.fields.age.attributes.range.toString(), "(0,130]");
   assertEquals(Schema.User.fields.status.attributes.default, "Enable");
+  assertEquals(Schema.User.attributes.constraint.length, 1);
+  assertEquals(Schema.User.attributes.constraint[0].first, "updatedAt");
+  assertEquals(Schema.User.attributes.constraint[0].symbol, ">");
+  assertEquals(Schema.User.attributes.constraint[0].second, "createdAt");
   assertEquals(Schema.Post.fields.title.objectType(), `string`);
   assertEquals(Schema.Post.fields.flag.fieldType, `int[]`);
   assertEquals(Schema.Post.fields.flag.objectType(), `number[]`);
