@@ -94,7 +94,7 @@ export class DateTimeField extends Field {
     return this._attributes;
   }
 
-  public get null(): Omit<this, "null" | OmitType> {
+  public get null(): Omit<this, "null" | "default" | "updatedAt" | OmitType> {
     if (this._attributes.null) {
       throw onceError;
     }

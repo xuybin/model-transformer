@@ -103,10 +103,31 @@ export class DateInterval {
       : (this.right as { lt: Date }).lt;
   }
 
+  public format(datetime: Date) {
+    const year = datetime.getFullYear();
+    const month = datetime.getMonth() + 1 < 10
+      ? "0" + (datetime.getMonth() + 1)
+      : datetime.getMonth() + 1;
+    const date = datetime.getDate() < 10
+      ? "0" + datetime.getDate()
+      : datetime.getDate();
+    const hour = datetime.getHours() < 10
+      ? "0" + datetime.getHours()
+      : datetime.getHours();
+    const minute = datetime.getMinutes() < 10
+      ? "0" + datetime.getMinutes()
+      : datetime.getMinutes();
+    const second = datetime.getSeconds() < 10
+      ? "0" + datetime.getSeconds()
+      : datetime.getSeconds();
+    return year + "-" + month + "-" + date + " " + hour + ":" + minute + ":" +
+      second;
+  }
+
   public toString() {
-    return `${
-      this.leftSymbol.includes("=") ? "[" : "("
-    }${this.leftValue},${this.rightValue}${
+    return `${this.leftSymbol.includes("=") ? "[" : "("}${
+      this.format(this.leftValue)
+    },${this.format(this.rightValue)}${
       this.rightSymbol.includes("=") ? "]" : ")"
     }`;
   }
