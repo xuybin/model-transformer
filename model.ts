@@ -36,7 +36,7 @@ export class Model<
     constraint: Array<
       {
         first: ResolveType<M>;
-        symbol: ">" | "<" | ">=" | "<=";
+        symbol: ">" | ">=" | "!=";
         second: ResolveType<M>;
       }
     >;
@@ -81,11 +81,19 @@ export class Model<
 
   public constraint(
     fieldName1: ResolveType<M>,
-    symbol: ">" | ">=",
+    symbol: ">" | ">=" | "!=",
     fieldName2: ResolveType<M>,
   ): this {
     if (fieldName1 == fieldName2) {
       throw new Error("Expect the two fieldNames to be different");
+    }
+    const fieldType1 = this._fields[fieldName1].fieldType;
+    const fieldType2 = this._fields[fieldName2].fieldType;
+    if (
+      (fieldType1 == "int" ? "float" : fieldType1) !=
+        (fieldType2 == "int" ? "float" : fieldType2)
+    ) {
+      throw new Error("Expect the two fieldNames's fieldType to be same");
     }
     for (const iterator of this._attributes.constraint) {
       if (
