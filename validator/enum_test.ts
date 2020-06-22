@@ -46,18 +46,4 @@ test("enum_type", () => {
     Error,
     "Expected value to be equal one of them 'Enable,Disable'",
   );
-  assertThrows(
-    () => {
-      new EnumField("Status", ["Enable", "Disable"]).default("Enable").null;
-    },
-    Error,
-    "Expected method to be mutually exclusive with 'default(*)'",
-  );
-  assertThrows(
-    () => {
-      new EnumField("Status", ["Enable", "Disable"]).null.default("Enable");
-    },
-    Error,
-    "Expected method to be mutually exclusive with 'null'",
-  );
 });

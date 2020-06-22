@@ -17,7 +17,7 @@ export class BooleanField extends Field {
     return this._attributes;
   }
 
-  public get null(): Omit<this, "null" | OmitType> {
+  public get null(): Omit<this, "null" | "default" | OmitType> {
     if (this._attributes.null) {
       throw onceError;
     }
@@ -32,7 +32,7 @@ export class BooleanField extends Field {
 
   public default(
     value: boolean,
-  ): Omit<this, "default" | OmitType> {
+  ): Omit<this, "default" | "null" | OmitType> {
     if (this._attributes.default) {
       throw onceError;
     }

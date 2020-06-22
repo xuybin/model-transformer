@@ -15,19 +15,4 @@ test("boolean_type", () => {
     (new BooleanField().default(false) as BooleanField).attributes.default,
     false,
   );
-
-  assertThrows(
-    () => {
-      new BooleanField().default(true).null;
-    },
-    Error,
-    "Expected method to be mutually exclusive with 'default(*)'",
-  );
-  assertThrows(
-    () => {
-      new BooleanField().null.default(false);
-    },
-    Error,
-    "Expected method to be mutually exclusive with 'null'",
-  );
 });

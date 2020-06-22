@@ -41,7 +41,7 @@ export class EnumField extends Field {
     return this._array ? `${this._name}[]` : `${this._name}`;
   }
 
-  public get null(): Omit<this, "null" | OmitType> {
+  public get null(): Omit<this, "null" | "default" | OmitType> {
     if (this._attributes.null) {
       throw onceError;
     }
@@ -56,7 +56,7 @@ export class EnumField extends Field {
 
   public default(
     value: string,
-  ): Omit<this, "default" | OmitType> {
+  ): Omit<this, "default" | "null" | OmitType> {
     if (this._attributes.default) {
       throw onceError;
     }
