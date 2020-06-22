@@ -133,7 +133,7 @@ export class DateTimeField extends Field {
       (!this.dateTimeRegex.test(value) || isNaN(new Date(value).valueOf()))
     ) {
       throw new Error(
-        `Expected valid date value`,
+        `Expected valid dateTime value`,
       );
     }
     this._attributes.default = value == "now()" ? "now()" : new Date(value);
