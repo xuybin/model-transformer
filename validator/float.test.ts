@@ -59,27 +59,6 @@ test("float_type", () => {
   );
   assertThrows(
     () => {
-      new FloatField().default(-0.9).null;
-    },
-    Error,
-    "Expected method to be mutually exclusive with 'default(*)'",
-  );
-  assertThrows(
-    () => {
-      new FloatField().null.default(-0.88);
-    },
-    Error,
-    "Expected method to be mutually exclusive with 'null'",
-  );
-  assertThrows(
-    () => {
-      new FloatField().unique.default(-0.88);
-    },
-    Error,
-    "Expected method to be mutually exclusive with 'unique'",
-  );
-  assertThrows(
-    () => {
       new FloatField().precision(-0.88);
     },
     Error,

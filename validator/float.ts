@@ -60,7 +60,7 @@ export class FloatField extends Field {
     return this._attributes;
   }
 
-  public get null(): Omit<this, "null" | OmitType> {
+  public get null(): Omit<this, "null" | "default" | OmitType> {
     if (this._attributes.null) {
       throw onceError;
     }
@@ -73,7 +73,7 @@ export class FloatField extends Field {
     return this;
   }
 
-  public get unique(): Omit<this, "unique" | OmitType> {
+  public get unique(): Omit<this, "unique" | "default" | OmitType> {
     if (this._attributes.unique) {
       throw onceError;
     }
@@ -88,7 +88,7 @@ export class FloatField extends Field {
 
   public default(
     value: number,
-  ): Omit<this, "default" | OmitType> {
+  ): Omit<this, "default" | "null" | "unique" | OmitType> {
     if (this._attributes.default) {
       throw onceError;
     }

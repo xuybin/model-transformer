@@ -74,3 +74,40 @@ export class Interval {
     }`;
   }
 }
+
+export class DateInterval {
+  public left: { gt: Date } | { gte: Date };
+  public right: { lt: Date } | { lte: Date };
+  constructor(
+    left: { gt: Date } | { gte: Date },
+    right: { lt: Date } | { lte: Date },
+  ) {
+    this.left = left;
+    this.right = right;
+  }
+  public get leftSymbol() {
+    return this.left.hasOwnProperty("gt") ? ">" : ">=";
+  }
+  public get rightSymbol() {
+    return this.right.hasOwnProperty("lt") ? "<" : "<=";
+  }
+  public get leftValue() {
+    return this.leftSymbol.includes("=")
+      ? (this.left as { gte: Date }).gte
+      : (this.left as { gt: Date }).gt;
+  }
+
+  public get rightValue() {
+    return this.rightSymbol.includes("=")
+      ? (this.right as { lte: Date }).lte
+      : (this.right as { lt: Date }).lt;
+  }
+
+  public toString() {
+    return `${
+      this.leftSymbol.includes("=") ? "[" : "("
+    }${this.leftValue},${this.rightValue}${
+      this.rightSymbol.includes("=") ? "]" : ")"
+    }`;
+  }
+}

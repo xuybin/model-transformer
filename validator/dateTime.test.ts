@@ -18,30 +18,20 @@ test("dateTime_type", () => {
     "now()",
   );
   assertEquals(
+    (new DateTimeField().default("2020-06-22 13:04:50") as DateTimeField)
+      .attributes.default,
+    new Date("2020-06-22 13:04:50"),
+  );
+  assertEquals(
     (new DateTimeField().updatedAt as DateTimeField).attributes.updatedAt,
     true,
   );
 
   assertThrows(
     () => {
-      new DateTimeField().default("now()").null;
-    },
-    Error,
-    "Expected method to be mutually exclusive with 'default(*)'",
-  );
-  assertThrows(
-    () => {
       new DateTimeField().null.default("now()");
     },
     Error,
     "Expected method to be mutually exclusive with 'null'",
-  );
-
-  assertThrows(
-    () => {
-      new DateTimeField().default("now()").updatedAt;
-    },
-    Error,
-    "Expected method to be mutually exclusive with 'default(*)'",
   );
 });

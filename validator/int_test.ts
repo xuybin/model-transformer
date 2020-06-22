@@ -59,25 +59,4 @@ test("int_type", () => {
     Error,
     `Expected value to be int,only in the range ${Int.MAX_RANGE}`,
   );
-  assertThrows(
-    () => {
-      new IntField().default(-9).null;
-    },
-    Error,
-    "Expected method to be mutually exclusive with 'default(*)'",
-  );
-  assertThrows(
-    () => {
-      new IntField().null.default(-88);
-    },
-    Error,
-    "Expected method to be mutually exclusive with 'null'",
-  );
-  assertThrows(
-    () => {
-      new IntField().unique.default(-88);
-    },
-    Error,
-    "Expected method to be mutually exclusive with 'unique'",
-  );
 });
