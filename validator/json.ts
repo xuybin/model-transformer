@@ -6,7 +6,7 @@ export class JsonField extends Field {
   }
   protected readonly _attributes: {
     null?: true;
-    default?: object;
+    default?: any;
   } = {
     null: undefined,
     default: undefined,
