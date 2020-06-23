@@ -6,7 +6,7 @@ import { ObjectField } from "./object.ts";
 
 const { test } = Deno;
 
-test("json_type", () => {
+test("object_type", () => {
   assertEquals(new ObjectField("User").objectType(), "User");
   assertEquals(new ObjectField("User").array.objectType(), "User[]");
   assertEquals(new ObjectField("User").fieldType, "User");
