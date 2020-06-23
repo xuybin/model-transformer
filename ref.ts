@@ -1,6 +1,6 @@
 import { ObjectField } from "./validator/object.ts";
 import { EnumField } from "./validator/enum.ts";
-import { OmitType } from "./validator/type.ts";
+import { OmitType } from "./validator/field.ts";
 
 type ResolveRef<R> = R extends string ? Omit<ObjectField, OmitType>
   : Omit<EnumField, OmitType>;

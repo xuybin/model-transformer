@@ -2,37 +2,37 @@ import {
   assertEquals,
   assertThrows,
 } from "https://deno.land/std/testing/asserts.ts";
-import { string } from "./string.ts";
+import { StringField, string } from "./string.ts";
 
 const { test } = Deno;
 
 test("string_type", () => {
-  //assertEquals(string().objectType(), "string");
-  //assertEquals(string().fieldType, "string");
+  assertEquals(new StringField().objectType(), "string");
+  assertEquals(new StringField().fieldType, "string");
   assertThrows(
     () => {
-      string().id.null;
+      string().id.regexp(/^.*$/).null;
     },
     Error,
     "Expected method to be mutually exclusive with 'id'",
   );
   assertThrows(
     () => {
-      string().id.unique;
+      string().id.regexp(/^.*$/).unique;
     },
     Error,
     "Expected method to be mutually exclusive with 'id'",
   );
   assertThrows(
     () => {
-      string().default("uuid()").null;
+      string().default("uuid()").regexp(/^.*$/).null;
     },
     Error,
     "Expected method to be mutually exclusive with 'default(*)'",
   );
   assertThrows(
     () => {
-      string().null.default("");
+      string().null.regexp(/^.*$/).default("");
     },
     Error,
     "Expected method to be mutually exclusive with 'null'",

@@ -1,4 +1,3 @@
-import { OmitType } from "./validator/type.ts";
 import { IntField } from "./validator/int.ts";
 import { FloatField } from "./validator/float.ts";
 import { BooleanField } from "./validator/boolean.ts";

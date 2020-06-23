@@ -1,4 +1,4 @@
-import { Field, OmitType, DateInterval, onceError } from "./type.ts";
+import { Field, OmitType, onceError } from "./field.ts";
 
 export const DateTime = {
   MIN_VALUE: new Date("1000-01-01 00:00:00"),
@@ -215,4 +215,63 @@ export function dateTime() {
     DateTimeField,
     OmitType
   >;
+}
+
+// “日期时间”型区间
+export class DateInterval {
+  public left: { gt: Date } | { gte: Date };
+  public right: { lt: Date } | { lte: Date };
+  constructor(
+    left: { gt: Date } | { gte: Date },
+    right: { lt: Date } | { lte: Date },
+  ) {
+    this.left = left;
+    this.right = right;
+  }
+  public get leftSymbol() {
+    return this.left.hasOwnProperty("gt") ? ">" : ">=";
+  }
+  public get rightSymbol() {
+    return this.right.hasOwnProperty("lt") ? "<" : "<=";
+  }
+  public get leftValue() {
+    return this.leftSymbol.includes("=")
+      ? (this.left as { gte: Date }).gte
+      : (this.left as { gt: Date }).gt;
+  }
+
+  public get rightValue() {
+    return this.rightSymbol.includes("=")
+      ? (this.right as { lte: Date }).lte
+      : (this.right as { lt: Date }).lt;
+  }
+
+  public format(datetime: Date) {
+    const year = datetime.getFullYear();
+    const month = datetime.getMonth() + 1 < 10
+      ? "0" + (datetime.getMonth() + 1)
+      : datetime.getMonth() + 1;
+    const date = datetime.getDate() < 10
+      ? "0" + datetime.getDate()
+      : datetime.getDate();
+    const hour = datetime.getHours() < 10
+      ? "0" + datetime.getHours()
+      : datetime.getHours();
+    const minute = datetime.getMinutes() < 10
+      ? "0" + datetime.getMinutes()
+      : datetime.getMinutes();
+    const second = datetime.getSeconds() < 10
+      ? "0" + datetime.getSeconds()
+      : datetime.getSeconds();
+    return year + "-" + month + "-" + date + " " + hour + ":" + minute + ":" +
+      second;
+  }
+
+  public toString() {
+    return `${this.leftSymbol.includes("=") ? "[" : "("}${
+      this.format(this.leftValue)
+    },${this.format(this.rightValue)}${
+      this.rightSymbol.includes("=") ? "]" : ")"
+    }`;
+  }
 }

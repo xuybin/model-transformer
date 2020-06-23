@@ -1,4 +1,4 @@
-import { Field, OmitType, onceError } from "./type.ts";
+import { Field, OmitType, onceError } from "./field.ts";
 
 export class EnumField extends Field {
   private _name: string;

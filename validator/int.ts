@@ -1,4 +1,4 @@
-import { Field, OmitType, onceError, Interval } from "./type.ts";
+import { Field, OmitType, onceError, Interval } from "./field.ts";
 
 export const Int = {
   MIN_VALUE: -2147483648,

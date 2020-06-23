@@ -1,4 +1,4 @@
-import { Field, OmitType, onceError, Interval } from "./type.ts";
+import { Field, OmitType, onceError, Interval } from "./field.ts";
 
 export const Float = {
   MIN_VALUE: new Number("-3.402823466E+38").valueOf(),
