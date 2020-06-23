@@ -3,7 +3,7 @@ import { Field, OmitType, onceError } from "./field.ts";
 export class EnumField extends Field {
   private _name: string;
   constructor(name: string, value: string[]) {
-    super("enum");
+    super("");
     if (value.length == 0) {
       throw new Error(`Expected to be nonempty for 'enum'`);
     }

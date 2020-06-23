@@ -9,6 +9,38 @@ const { test } = Deno;
 test("string_type", () => {
   assertEquals(new StringField().objectType(), "string");
   assertEquals(new StringField().fieldType, "string");
+  assertEquals(
+    (string().id as StringField).attributes.id,
+    true,
+  );
+  assertEquals(
+    (string().null as StringField).attributes.null,
+    true,
+  );
+  assertEquals(
+    (string().unique as StringField).attributes.unique,
+    true,
+  );
+  assertEquals(
+    (string().default("abc") as StringField).attributes.default,
+    "abc",
+  );
+  assertEquals(
+    (string().regexp(/^[a-z0-9]{2,10}$/) as StringField).attributes.regexp[0],
+    /^[a-z0-9]{2,10}$/,
+  );
+  assertEquals(
+    (string().regexp(/^[a-z0-9]{2,10}$/).default("a12") as StringField)
+      .attributes.default,
+    "a12",
+  );
+  assertThrows(
+    () => {
+      string().regexp(/^[a-z0-9]{3,10}$/).default("a1");
+    },
+    Error,
+    "Expected to pass regular(/^[a-z0-9]{3,10}$/) check's string value",
+  );
   assertThrows(
     () => {
       string().id.regexp(/^.*$/).null;

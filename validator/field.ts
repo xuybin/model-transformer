@@ -65,10 +65,9 @@ export const onceError = new Error("Expected method to be called once");
 const TYPE = {
   string: { ts: "string" },
   dateTime: { ts: "string" },
-  enum: { ts: "enum" },
   float: { ts: "number" },
   int: { ts: "number" },
-  json: { ts: "object" },
+  json: { ts: "any" },
   boolean: { ts: "boolean" },
   "": { ts: "" },
 };
