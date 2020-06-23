@@ -9,6 +9,49 @@ const { test } = Deno;
 
 test("type", () => {
   assertEquals(
+    (string().regexp(Type.idCard).default("11010119900101581X") as StringField)
+      .attributes.default,
+    "11010119900101581X",
+  );
+  assertThrows(
+    () => {
+      string().regexp(Type.idCard).default("11010119900101581x");
+    },
+    Error,
+    `Expected to pass regular(${Type.idCard}) check's string value`,
+  );
+
+  assertEquals(
+    (string().regexp(Type.addressCode).default("520115000000") as StringField)
+      .attributes.default,
+    "520115000000",
+  );
+  assertThrows(
+    () => {
+      string().regexp(Type.addressCode).default("5201150000001");
+    },
+    Error,
+    `Expected to pass regular(${Type.addressCode}) check's string value`,
+  );
+
+  assertEquals(
+    (string().regexp(Type.uniformSocialCreditCode).default(
+      "1210000040077753X1",
+    ) as StringField)
+      .attributes.default,
+    "1210000040077753X1",
+  );
+  assertThrows(
+    () => {
+      string().regexp(Type.uniformSocialCreditCode).default(
+        "1210000040077753x1",
+      );
+    },
+    Error,
+    `Expected to pass regular(${Type.uniformSocialCreditCode}) check's string value`,
+  );
+
+  assertEquals(
     (string().regexp(Type.email).default("admin@qq.com") as StringField)
       .attributes.default,
     "admin@qq.com",
