@@ -26,3 +26,26 @@ export function ref<T extends object | string = string>(
     ) as Omit<EnumField, OmitType>) as ResolveRef<T>;
   }
 }
+
+export function validateRef<S>(schema: S) {
+  const modelNames = Object.keys(schema);
+  for (const key in schema) {
+    if ((schema[key] as any).hasOwnProperty("_fields")) {
+      const fields = (schema[key] as any)["_fields"];
+      for (const fk in fields) {
+        const field = fields[fk];
+        if (
+          field instanceof ObjectField &&
+          !modelNames.includes(field.fieldType.replace("[]", ""))
+        ) {
+          throw new Error(
+            `${key}.${fk}'s ref("${
+              field.fieldType.replace("[]", "")
+            }") not exist in schema`,
+          );
+        }
+      }
+    }
+  }
+  return schema;
+}
