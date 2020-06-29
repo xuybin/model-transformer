@@ -5,6 +5,8 @@ import {
 import { model } from "./model.ts";
 import { string } from "./validator/string.ts";
 import { ref } from "./ref.ts";
+import { EnumField } from "./validator/enum.ts";
+import { ObjectField } from "./validator/object.ts";
 
 const { test } = Deno;
 
@@ -24,15 +26,33 @@ test("enum_type", () => {
     name: string().null,
   }).index("name", "email");
 
-  // assertEquals(ref(OrderStatus).fieldType, "enum");
-  // assertEquals(ref(OrderStatus).objectType(), "enum");
-  // assertEquals(ref("User").fieldType, "User");
-  // assertEquals(ref("User").objectType(), "User");
-  // assertThrows(
-  //   () => {
-  //     ref(User);
-  //   },
-  //   Error,
-  //   "Expected to be 'enum'",
-  // );
+  assertEquals(
+    (ref("OrderStatus", OrderStatus).default("Start") as EnumField)
+      .objectType(),
+    "OrderStatus",
+  );
+  assertEquals(
+    (ref("OrderStatus", OrderStatus).default("Start") as EnumField).fieldType,
+    "OrderStatus",
+  );
+  assertEquals(
+    (ref("OrderStatus", OrderStatus).default("Start") as EnumField).array
+      .objectType(),
+    "OrderStatus[]",
+  );
+
+  assertEquals(
+    (ref("User").null as ObjectField)
+      .objectType(),
+    "User",
+  );
+  assertEquals(
+    (ref("User").null as ObjectField).fieldType,
+    "User",
+  );
+  assertEquals(
+    (ref("User") as ObjectField).array
+      .objectType(),
+    "User[]",
+  );
 });
