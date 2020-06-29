@@ -25,9 +25,4 @@ export function ref<T extends object | string = string>(
       Object.values(value).filter((x) => typeof x != "number"),
     ) as Omit<EnumField, OmitType>) as ResolveRef<T>;
   }
-  // return (typeof value == "string"
-  //   ? new ObjectField(value) as Omit<ObjectField, OmitType>
-  //   : new EnumField(
-  //     Object.values(value).filter((x) => typeof x != "number"),
-  //   ) as Omit<EnumField, OmitType>) as ResolveRef<T>;
 }
