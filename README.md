@@ -4,7 +4,7 @@
 ## Using `model-transformer`
 
 ```ts
-import { schema, model, ref, int, float, boolean, string, dateTime, json} from 'https://deno.land/x/gh:xuybin:model-transformer/mod.ts';
+import { schema, model, ref, int, float, boolean, string, dateTime, Int} from 'https://deno.land/x/gh:xuybin:model-transformer/mod.ts';
 enum Status {
     Enable,
     Disable,
