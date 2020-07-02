@@ -7,3 +7,4 @@ export { json } from "./validator/json.ts";
 export { ref } from "./ref.ts";
 export { model } from "./model.ts";
 export { schema } from "./schema.ts";
+export { res } from "./res.ts";

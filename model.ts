@@ -29,17 +29,18 @@ export class Model<
   },
 > {
   private readonly _attributes: {
-    index: Array<ResolveType<M>>;
-    id: Array<ResolveType<M>>;
-    unique: Array<ResolveType<M>>;
-    constraint: Array<
+    modelName: string;
+    readonly index: Array<ResolveType<M>>;
+    readonly id: Array<ResolveType<M>>;
+    readonly unique: Array<ResolveType<M>>;
+    readonly constraint: Array<
       {
         first: ResolveType<M>;
         symbol: ">" | ">=" | "!=";
         second: ResolveType<M>;
       }
     >;
-  } = { index: [], id: [], unique: [], constraint: [] };
+  } = { modelName: "", index: [], id: [], unique: [], constraint: [] };
 
   public get attributes() {
     return this._attributes;

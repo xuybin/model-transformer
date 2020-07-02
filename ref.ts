@@ -1,6 +1,7 @@
 import { ObjectField } from "./validator/object.ts";
 import { EnumField } from "./validator/enum.ts";
 import { OmitType } from "./validator/field.ts";
+import { Model } from "./model.ts";
 
 type ResolveRef<R> = R extends string ? Omit<ObjectField, OmitType>
   : Omit<EnumField, OmitType>;
@@ -27,9 +28,12 @@ export function ref<T extends object | string = string>(
   }
 }
 
-export function validateRef<S>(schema: S) {
+export function validateRef<
+  S extends Record<string, Pick<Model, "attributes" | "fields">>,
+>(schema: S) {
   const modelNames = Object.keys(schema);
   for (const key in schema) {
+    schema[key].attributes.modelName = key;
     if ((schema[key] as any).hasOwnProperty("_fields")) {
       const fields = (schema[key] as any)["_fields"];
       for (const fk in fields) {

@@ -7,6 +7,7 @@ export class ObjectField extends Field {
     relation?: {
       name?: string;
       references: string[];
+      fields?: string[];
     };
   } = {
     relation: undefined,
@@ -43,6 +44,7 @@ export class ObjectField extends Field {
   public relation(
     references: string[],
     name?: string,
+    fields?: string[],
   ): Omit<this, "relation" | OmitType> {
     if (this._attributes.relation) {
       throw onceError;
@@ -50,6 +52,7 @@ export class ObjectField extends Field {
     this._attributes.relation = {
       name,
       references,
+      fields,
     };
     return this;
   }
